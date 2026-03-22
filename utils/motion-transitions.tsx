@@ -15,6 +15,18 @@ export const transitionVariantsPage: Variants = {
   },
 };
 
+export const staircaseVariants: Variants = {
+    initial: {
+        top: 0
+    },
+    animate: {
+        top: "100%"
+    },
+    exit: {
+        top: ["100%", 0]
+    }
+}
+
 export const fadeIn = (position: 'right' | 'bottom'): Variants => {
   return {
     visible: {
