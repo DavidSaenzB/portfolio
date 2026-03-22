@@ -32,6 +32,7 @@ const ContactForm = () => {
                 setStatus(dict.contact.statusError);
             }
         } catch (error) {
+            console.error(error);
             setStatus(dict.contact.statusError);
         }
     }
