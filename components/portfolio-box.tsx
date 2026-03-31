@@ -8,21 +8,25 @@ interface PortfolioBoxProps {
         urlDemo: string
     },
     title: string,
+    description?: string,
     btnGithub: string,
     btnDemo: string
 }
 
 const PortfolioBox = (props: PortfolioBoxProps) => {
-    const { data, title, btnGithub, btnDemo } = props
+    const { data, title, description, btnGithub, btnDemo } = props
 
     return (
         <div className="p-4 border border-teal-50/20 rounded-xl bg-slate-800/20 hover:bg-slate-800/50 transition-all duration-300">
             <h3 className="mb-4 text-xl font-bold text-emerald-400 min-h-[56px] flex items-center">{title}</h3>
-            <img 
-                src={data.image} 
-                alt={title} 
-                className="w-full h-[180px] object-cover rounded-2xl mb-4 border border-slate-700/50" 
+            <img
+                src={data.image}
+                alt={title}
+                className="w-full h-[180px] object-cover rounded-2xl mb-4 border border-slate-700/50"
             />
+            {description && (
+                <p className="text-sm text-gray-400 mb-4 line-clamp-3">{description}</p>
+            )}
 
             <div className="flex gap-4 mt-auto">
                 <Link 

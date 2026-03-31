@@ -9,7 +9,7 @@ export const en = {
             'You can design it',
             'You can develop it',
         ],
-        bio: "Full-Stack Web Developer with a strong technical foundation and over 10 years of experience in business administration, finance, and quality management systems. I build dynamic apps using React and Node.js, bringing a unique strategic vision from my analytical leadership background.",
+        bio: "Full-Stack Developer & AI-Powered MVP Specialist with 10+ years of business and finance experience. I build production-ready applications fast — from SaaS platforms and web apps to AI-powered tools and custom automations — using React, Node.js, FastAPI and Claude AI.\n\nWhat sets me apart: I don't just write code, I understand the business behind it. That combination of technical skills and strategic thinking means I deliver solutions that actually work in the real world.",
         btnProjects: "Projects",
         btnContact: "Contact me"
     },
@@ -23,10 +23,28 @@ export const en = {
         ],
         timeline: [
             {
+                title: "Junior Software Engineer",
+                subtitle: "Open Democracy — Remote",
+                description: "Software development on a temporary contract, building and maintaining web solutions for the organization.",
+                date: "Jan 2026 - Present",
+            },
+            {
+                title: "Junior Software Engineer",
+                subtitle: "Joy Marketing — Worldwide — Remote",
+                description: "Part-time software development, creating and maintaining web applications and digital solutions.",
+                date: "Dec 2024 - Present",
+            },
+            {
                 title: "Artificial Intelligence Bootcamp",
                 subtitle: "Universidad San Buenaventura & MinTIC Colombia",
-                description: "Intensive training in Artificial Intelligence and Python programming. Talento Tech Valle. Currently enrolled.",
-                date: "Present",
+                description: "Intensive training in Artificial Intelligence and Python programming. Talento Tech Valle.",
+                date: "Nov 2025",
+            },
+            {
+                title: "Introduction to Cybersecurity",
+                subtitle: "Cisco Networking Academy",
+                description: "Fundamentals of cybersecurity, common threats and vulnerabilities, online protection strategies, and organizational security practices.",
+                date: "Oct 2025",
             },
             {
                 title: "Full-Stack Developer Bootcamp",
@@ -91,15 +109,17 @@ export const en = {
         btnGithub: "Github",
         btnDemo: "Demo",
         items: [
-            "Spark Dating App (MVP)",
-            "Personal Web Portfolio",
-            "Appointment Booking App",
-            "Mini E-commerce Store",
-            "Airbnb-style Rental App",
-            "Car Rental App",
-            "AI: Crop Prediction Models",
-            "Commercial Production ERP",
-            "AI: Medical Image Analysis"
+            { title: "AuditAI - AI Financial Audit", description: "AI-powered financial auditor for public sector contracts (ICBF Colombia). Automatically analyzes Excel reports and scanned PDF documents detecting budget inconsistencies, banking differences and compliance issues. Built with React, FastAPI and Claude Sonnet via TARS API." },
+            { title: "ThoraxAI - AI Pulmonary Analysis", description: "Advanced chest X-ray analyzer detecting 18 pathologies using DenseNet-121 deep learning model. Built with React, FastAPI, TorchXRayVision and deployed on HuggingFace + Vercel." },
+            { title: "Spark Dating App (MVP)", description: "Dating app MVP built with React and Node.js. Full-stack application with user matching, profiles and real-time features. Backend powered by Node.js + Express, database with Supabase (PostgreSQL), authentication and real-time subscriptions included." },
+            { title: "Personal Web Portfolio", description: "Professional portfolio built with Next.js, React, TypeScript and Tailwind CSS. Features bilingual support (EN/ES), animated transitions with Framer Motion, particle effects and a fully responsive design." },
+            { title: "Appointment Booking App", description: "Medical appointment scheduling platform with calendar management, patient profiles and real-time availability. Built with React, Node.js, Express and PostgreSQL." },
+            { title: "Mini E-commerce Store", description: "Compact e-commerce application with product catalog, shopping cart, checkout flow and payment integration. Built with React, Node.js, Express and PostgreSQL." },
+            { title: "Airbnb-style Rental App", description: "Property rental platform with listing management, search filters, booking system and user reviews. Built with React, Node.js, Express and PostgreSQL." },
+            { title: "Car Rental App", description: "Vehicle rental application with fleet management, availability calendar, reservation system and pricing engine. Built with React, Node.js, Express and PostgreSQL." },
+            { title: "AI: Crop Prediction Models", description: "Machine learning models for agricultural crop prediction and yield estimation. Data analysis and classification algorithms using Python, Pandas, Scikit-learn and TensorFlow." },
+            { title: "Commercial Production ERP", description: "Enterprise resource planning system for commercial production management. Modules for inventory, orders, invoicing and financial reporting. Built with React, Node.js and PostgreSQL." },
+            { title: "AI: Medical Image Analysis", description: "Deep learning system for medical image classification and pathology detection. Built with Python, TensorFlow, Keras and computer vision techniques for diagnostic support." }
         ]
     },
     contact: {

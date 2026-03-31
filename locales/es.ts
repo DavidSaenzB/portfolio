@@ -9,7 +9,7 @@ export const es = {
             'Puedes diseñarlo',
             'Puedes desarrollarlo',
         ],
-        bio: "Desarrollador Web Full-Stack con fuertes bases tecnológicas y más de 10 años de experiencia en administración de negocios, finanzas y sistemas de gestión de calidad. Capaz de crear aplicaciones dinámicas con React y Node.js, aportando una visión estratégica única gracias a mi trayectoria de liderazgo analítico.",
+        bio: "Desarrollador Full-Stack & Especialista en MVPs con IA, con más de 10 años de experiencia en negocios y finanzas. Construyo aplicaciones listas para producción rápidamente — desde plataformas SaaS y apps web hasta herramientas con IA y automatizaciones personalizadas — usando React, Node.js, FastAPI y Claude AI.\n\nLo que me diferencia: no solo escribo código, entiendo el negocio detrás de él. Esa combinación de habilidades técnicas y pensamiento estratégico significa que entrego soluciones que realmente funcionan en el mundo real.",
         btnProjects: "Proyectos",
         btnContact: "Contacta conmigo"
     },
@@ -23,10 +23,28 @@ export const es = {
         ],
         timeline: [
             {
+                title: "Junior Software Engineer",
+                subtitle: "Open Democracy — Remoto",
+                description: "Desarrollo de software bajo contrato temporal, construyendo y manteniendo soluciones web para la organización.",
+                date: "Ene 2026 - Actualidad",
+            },
+            {
+                title: "Junior Software Engineer",
+                subtitle: "Joy Marketing — Worldwide — Remoto",
+                description: "Desarrollo de software a jornada parcial, creando y manteniendo aplicaciones web y soluciones digitales.",
+                date: "Dic 2024 - Actualidad",
+            },
+            {
                 title: "Bootcamp Inteligencia Artificial",
                 subtitle: "Universidad San Buenaventura & MinTIC Colombia",
-                description: "Formación intensiva en Inteligencia Artificial y programación con Python. Talento Tech Valle. En activo.",
-                date: "Actualidad",
+                description: "Formación intensiva en Inteligencia Artificial y programación con Python. Talento Tech Valle.",
+                date: "Nov 2025",
+            },
+            {
+                title: "Introducción a la Ciberseguridad",
+                subtitle: "Cisco Networking Academy",
+                description: "Fundamentos de ciberseguridad, amenazas y vulnerabilidades comunes, estrategias de protección en línea y prácticas de seguridad organizacional.",
+                date: "Oct 2025",
             },
             {
                 title: "Bootcamp Full-Stack Developer",
@@ -91,15 +109,17 @@ export const es = {
         btnGithub: "Github",
         btnDemo: "Demo",
         items: [
-            "Spark Dating App (MVP)",
-            "Portfolio Web Personal",
-            "App Gestor de Turnos Médicos",
-            "Mini E-commerce Store",
-            "Plataforma Alquiler (Airbnb)",
-            "App Alquiler de Carros",
-            "IA: Modelos de Cultivos",
-            "ERP Producción Comercial",
-            "IA: Imágenes Diagnósticas"
+            { title: "AuditAI - Auditoría Financiera IA", description: "Auditor financiero con IA para contratos del sector público (ICBF Colombia). Analiza automáticamente reportes Excel y documentos PDF escaneados detectando inconsistencias presupuestales, diferencias bancarias y problemas de cumplimiento. Construido con React, FastAPI y Claude Sonnet vía TARS API." },
+            { title: "ThoraxAI - Análisis Pulmonar IA", description: "Analizador avanzado de radiografías de tórax que detecta 18 patologías usando el modelo de deep learning DenseNet-121. Construido con React, FastAPI, TorchXRayVision y desplegado en HuggingFace + Vercel." },
+            { title: "Spark Dating App (MVP)", description: "MVP de app de citas construido con React y Node.js. Aplicación full-stack con matching de usuarios, perfiles y funciones en tiempo real. Backend con Node.js + Express, base de datos con Supabase (PostgreSQL), autenticación y suscripciones en tiempo real." },
+            { title: "Portfolio Web Personal", description: "Portfolio profesional construido con Next.js, React, TypeScript y Tailwind CSS. Soporte bilingüe (EN/ES), transiciones animadas con Framer Motion, efectos de partículas y diseño totalmente responsivo." },
+            { title: "App Gestor de Turnos Médicos", description: "Plataforma de agendamiento de citas médicas con gestión de calendario, perfiles de pacientes y disponibilidad en tiempo real. Construido con React, Node.js, Express y PostgreSQL." },
+            { title: "Mini E-commerce Store", description: "Aplicación e-commerce compacta con catálogo de productos, carrito de compras, flujo de checkout e integración de pagos. Construido con React, Node.js, Express y PostgreSQL." },
+            { title: "Plataforma Alquiler (Airbnb)", description: "Plataforma de alquiler de propiedades con gestión de listados, filtros de búsqueda, sistema de reservas y reseñas de usuarios. Construido con React, Node.js, Express y PostgreSQL." },
+            { title: "App Alquiler de Carros", description: "Aplicación de alquiler de vehículos con gestión de flota, calendario de disponibilidad, sistema de reservas y motor de precios. Construido con React, Node.js, Express y PostgreSQL." },
+            { title: "IA: Modelos de Cultivos", description: "Modelos de machine learning para predicción de cultivos agrícolas y estimación de rendimiento. Análisis de datos y algoritmos de clasificación con Python, Pandas, Scikit-learn y TensorFlow." },
+            { title: "ERP Producción Comercial", description: "Sistema de planificación de recursos empresariales para gestión de producción comercial. Módulos de inventario, pedidos, facturación y reportes financieros. Construido con React, Node.js y PostgreSQL." },
+            { title: "IA: Imágenes Diagnósticas", description: "Sistema de deep learning para clasificación de imágenes médicas y detección de patologías. Construido con Python, TensorFlow, Keras y técnicas de visión por computadora para apoyo diagnóstico." }
         ]
     },
     contact: {

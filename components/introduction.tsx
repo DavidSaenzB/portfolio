@@ -37,7 +37,7 @@ const Introduction = () => {
             />
             </h1>
 
-            <p className="mx-auto mb-2 text-xl md:mx-0 md:mb-8 text-center md:text-left text-slate-300">
+            <p className="mx-auto mb-2 text-xl md:mx-0 md:mb-8 text-center md:text-left text-slate-300 whitespace-pre-line">
                {dict.intro.bio}
             </p>
             <div className="flex item-center justify-center gap-3 md:justify-start md:gap-10">

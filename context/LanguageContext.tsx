@@ -12,7 +12,7 @@ type LanguageContextType = {
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export const LanguageProvider = ({ children }: { children: React.ReactNode }) => {
-  const [language, setLanguage] = useState<'es' | 'en'>('es'); // Default is ES
+  const [language, setLanguage] = useState<'es' | 'en'>('en'); // Default is EN
 
   useEffect(() => {
     // Load from localStorage if exists

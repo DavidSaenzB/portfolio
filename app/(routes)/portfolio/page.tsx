@@ -20,10 +20,11 @@ const PortfolioPage = () => {
 
                     <div className="grid gap-6 mx-auto sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 max-w-6xl">
                         {dataPortfolio.map((data, index) => (
-                            <PortfolioBox 
-                                key={data.id} 
-                                data={data} 
-                                title={dict.portfolio.items[index]} 
+                            <PortfolioBox
+                                key={data.id}
+                                data={data}
+                                title={dict.portfolio.items[index].title}
+                                description={dict.portfolio.items[index].description}
                                 btnGithub={dict.portfolio.btnGithub}
                                 btnDemo={dict.portfolio.btnDemo}
                             />

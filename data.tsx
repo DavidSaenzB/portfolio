@@ -14,7 +14,7 @@ export const socialNetworks = [
     {
         id: 3,
         logo: <Mail size={30} strokeWidth={1} />,
-        src: "mailto:davidsaenzb@gmail.com",
+        src: "mailto:hire@davidsaenz.dev",
     }
 ];
 
@@ -55,34 +55,55 @@ export const itemsNavbar = [
 export const dataAboutPage = [
     {
         id: 1,
-        title: "Bootcamp Inteligencia Artificial",
-        subtitle: "Universidad San Buenaventura & MinTIC Colombia",
-        description: "Formación intensiva en Inteligencia Artificial y programación con Python. Talento Tech Valle. En activo.",
-        date: "Actualidad",
+        title: "Junior Software Engineer",
+        subtitle: "Open Democracy — Remoto",
+        description: "Desarrollo de software bajo contrato temporal, construyendo y manteniendo soluciones web para la organización.",
+        date: "Ene 2026 - Actualidad",
     },
     {
         id: 2,
+        title: "Junior Software Engineer",
+        subtitle: "Joy Marketing — Worldwide — Remoto",
+        description: "Desarrollo de software a jornada parcial, creando y manteniendo aplicaciones web y soluciones digitales.",
+        date: "Dic 2024 - Actualidad",
+    },
+    {
+        id: 3,
+        title: "Bootcamp Inteligencia Artificial",
+        subtitle: "Universidad San Buenaventura & MinTIC Colombia",
+        description: "Formación intensiva en Inteligencia Artificial y programación con Python. Talento Tech Valle.",
+        date: "Nov 2025",
+    },
+    {
+        id: 4,
+        title: "Introducción a la Ciberseguridad",
+        subtitle: "Cisco Networking Academy",
+        description: "Fundamentos de ciberseguridad, amenazas y vulnerabilidades comunes, estrategias de protección en línea y prácticas de seguridad organizacional.",
+        date: "Oct 2025",
+    },
+    {
+        id: 5,
         title: "Bootcamp Full-Stack Developer",
         subtitle: "SoyHenry, Argentina",
         description: "Formación inmersiva en desarrollo web moderno (Frontend & Backend) con tecnologías como React, Node.js y Bases de Datos.",
         date: "Graduado",
     },
     {
-        id: 3,
+        id: 6,
         title: "Líder de Procesos TI & Analista Administrativo",
         subtitle: "Radiologia Diagnostica Bolivar SAS",
         description: "Optimización de flujos de trabajo TI, automatización de tareas y metodologías Lean/Agile. Gestión de presupuestos, sistemas de calidad y liderazgo de un equipo administrativo de 5 personas.",
         date: "Sep 2014 - Mar 2024",
     },
     {
-        id: 4,
+        id: 7,
         title: "Gerente Administrativo",
         subtitle: "Inversiones Chulquin Zomac SAS",
         description: "Administración integral de producción de café de especialidad. Coordinación de certificaciones (Rainforest, UTZ, FairTrade), análisis financiero y software contable.",
         date: "Jun 2013 - Jun 2022",
     },
     {
-        id: 5,
+        id: 8,
         title: "Administrador de Empresas",
         subtitle: "Universidad de San Buenaventura Cali",
         description: "Título profesional universitario (Bachelor's Degree in Business Administration).",
@@ -107,7 +128,7 @@ export const dataCounter = [
     },
     {
         id: 2,
-        endCounter: 4,
+        endCounter: 5,
         text: "Certificaciones (Dev & IA)",
         lineRight: false,
         lineRightMobile: true,
@@ -150,54 +171,66 @@ export const serviceData = [
 export const dataPortfolio = [
     {
         id: 1,
-        image: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=80&w=800&auto=format&fit=crop", // heart / dating theme
+        image: "/auditai.png",
+        urlGithub: "https://github.com/DavidSaenzB",
+        urlDemo: "https://auditai-gamma.vercel.app",
+    },
+    {
+        id: 2,
+        image: "/thoraxai.png",
+        urlGithub: "https://github.com/DavidSaenzB",
+        urlDemo: "https://thoraxai-o71n6ynz6-davidsaenzbs-projects.vercel.app",
+    },
+    {
+        id: 3,
+        image: "/spark-dating.png",
         urlGithub: "https://github.com/DavidSaenzB/spark-dating",
         urlDemo: "https://spark-dating-mvp.vercel.app/",
     },
     {
-        id: 2,
-        image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=800&auto=format&fit=crop", // personal web theme (macbook coding)
+        id: 4,
+        image: "/davidsaenz.png",
         urlGithub: "https://github.com/DavidSaenzB",
-        urlDemo: "#!",
+        urlDemo: "https://www.davidsaenz.dev",
     },
     {
-        id: 3,
+        id: 5,
         image: "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?q=80&w=800&auto=format&fit=crop", // booking/medical theme
         urlGithub: "https://github.com/DavidSaenzB",
         urlDemo: "#!",
     },
     {
-        id: 4,
+        id: 6,
         image: "https://images.unsplash.com/photo-1556740738-b6a63e27c4df?q=80&w=800&auto=format&fit=crop", // e-commerce theme
         urlGithub: "https://github.com/DavidSaenzB",
         urlDemo: "#!",
     },
     {
-        id: 5,
+        id: 7,
         image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=800&auto=format&fit=crop", // hotel / airbnb theme
         urlGithub: "https://github.com/DavidSaenzB",
         urlDemo: "#!",
     },
     {
-        id: 6,
+        id: 8,
         image: "https://images.unsplash.com/photo-1562911791-c7a97b729ec5?q=80&w=800&auto=format&fit=crop", // car rental theme
         urlGithub: "https://github.com/DavidSaenzB",
         urlDemo: "#!",
     },
     {
-        id: 7,
+        id: 9,
         image: "https://images.unsplash.com/photo-1611843467160-25afb8df1074?q=80&w=800&auto=format&fit=crop", // coffee farm AI theme
         urlGithub: "https://github.com/DavidSaenzB",
         urlDemo: "#!",
     },
     {
-        id: 8,
+        id: 10,
         image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop", // ERP / dashboard
         urlGithub: "https://github.com/DavidSaenzB",
         urlDemo: "#!",
     },
     {
-        id: 9,
+        id: 11,
         image: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=800&auto=format&fit=crop", // medical imagery / AI diagnostics (laboratory/hospital)
         urlGithub: "https://github.com/DavidSaenzB",
         urlDemo: "#!",
