@@ -109,9 +109,9 @@ export const en = {
         btnGithub: "Github",
         btnDemo: "Demo",
         items: [
-            { title: "AuditAI - AI Financial Audit", description: "AI-powered financial auditor for public sector contracts (ICBF Colombia). Automatically analyzes Excel reports and scanned PDF documents detecting budget inconsistencies, banking differences and compliance issues. Built with React, FastAPI and Claude Sonnet via TARS API." },
             { title: "ThoraxAI - AI Pulmonary Analysis", description: "Advanced chest X-ray analyzer detecting 18 pathologies using DenseNet-121 deep learning model. Built with React, FastAPI, TorchXRayVision and deployed on HuggingFace + Vercel." },
             { title: "Spark Dating App (MVP)", description: "Dating app MVP built with React and Node.js. Full-stack application with user matching, profiles and real-time features. Backend powered by Node.js + Express, database with Supabase (PostgreSQL), authentication and real-time subscriptions included." },
+            { title: "AuditAI - AI Financial Audit", description: "AI-powered financial auditor for public sector contracts (ICBF Colombia). Automatically analyzes Excel reports and scanned PDF documents detecting budget inconsistencies, banking differences and compliance issues. Built with React, FastAPI and Claude Sonnet via TARS API." },
             { title: "Personal Web Portfolio", description: "Professional portfolio built with Next.js, React, TypeScript and Tailwind CSS. Features bilingual support (EN/ES), animated transitions with Framer Motion, particle effects and a fully responsive design." },
             { title: "Appointment Booking App", description: "Medical appointment scheduling platform with calendar management, patient profiles and real-time availability. Built with React, Node.js, Express and PostgreSQL." },
             { title: "Mini E-commerce Store", description: "Compact e-commerce application with product catalog, shopping cart, checkout flow and payment integration. Built with React, Node.js, Express and PostgreSQL." },

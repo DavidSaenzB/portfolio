@@ -10,19 +10,19 @@ const Introduction = () => {
 
   return (
     <div className="z-20 w-full bg-darkBg/60">
-      <div className="z-20 grid items-center h-full p-6 py-20 md:py-0 md:grid-cols-2">
-        <Image 
-          src="/home-4.png" 
-          priority 
-          width={800} 
-          height={800} 
-          alt="Profile pic" 
+      <div className="z-20 grid items-center h-full p-6 pt-36 pb-32 md:py-0 md:grid-cols-2">
+        <Image
+          src="/home-4.png"
+          priority
+          width={800}
+          height={800}
+          alt="Profile pic"
           className="w-[200px] md:w-[400px] h-auto mx-auto mb-8 md:mb-0"
         />
 
         <div className="flex flex-col justify-center max-w-md mx-auto md:mx-0">
           <h1 className="mb-5 text-2xl leading-tight text-center md:text-left md:text-4xl md:mb-10">
-            {dict.intro.line1} <br />  
+            {dict.intro.line1} <br />
           <TypeAnimation
             key={language}
             sequence={[
@@ -37,7 +37,7 @@ const Introduction = () => {
             />
             </h1>
 
-            <p className="mx-auto mb-2 text-xl md:mx-0 md:mb-8 text-center md:text-left text-slate-300 whitespace-pre-line">
+            <p className="mx-auto mb-4 text-base md:text-xl md:mx-0 md:mb-8 text-center md:text-left text-slate-300 whitespace-pre-line">
                {dict.intro.bio}
             </p>
             <div className="flex item-center justify-center gap-3 md:justify-start md:gap-10">

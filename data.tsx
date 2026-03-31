@@ -171,21 +171,21 @@ export const serviceData = [
 export const dataPortfolio = [
     {
         id: 1,
-        image: "/auditai.png",
-        urlGithub: "https://github.com/DavidSaenzB",
-        urlDemo: "https://auditai-gamma.vercel.app",
-    },
-    {
-        id: 2,
         image: "/thoraxai.png",
         urlGithub: "https://github.com/DavidSaenzB",
         urlDemo: "https://thoraxai-o71n6ynz6-davidsaenzbs-projects.vercel.app",
     },
     {
-        id: 3,
+        id: 2,
         image: "/spark-dating.png",
         urlGithub: "https://github.com/DavidSaenzB/spark-dating",
         urlDemo: "https://spark-dating-mvp.vercel.app/",
+    },
+    {
+        id: 3,
+        image: "/auditai.png",
+        urlGithub: "https://github.com/DavidSaenzB",
+        urlDemo: "https://auditai-gamma.vercel.app",
     },
     {
         id: 4,
