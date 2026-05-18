@@ -173,68 +173,32 @@ export const dataPortfolio = [
         id: 1,
         image: "/thoraxai.png",
         urlGithub: "https://github.com/DavidSaenzB",
-        urlDemo: "https://thoraxai-o71n6ynz6-davidsaenzbs-projects.vercel.app",
+        urlDemo: "https://thoraxai-murex.vercel.app/",
     },
     {
         id: 2,
+        image: "/pynova.png",
+        urlGithub: "https://github.com/DavidSaenzB",
+        urlDemo: "https://pynova.dev/",
+    },
+    {
+        id: 3,
         image: "/spark-dating.png",
         urlGithub: "https://github.com/DavidSaenzB/spark-dating",
         urlDemo: "https://spark-dating-mvp.vercel.app/",
     },
     {
-        id: 3,
+        id: 4,
         image: "/auditai.png",
         urlGithub: "https://github.com/DavidSaenzB",
         urlDemo: "https://auditai-gamma.vercel.app",
     },
     {
-        id: 4,
+        id: 5,
         image: "/davidsaenz.png",
         urlGithub: "https://github.com/DavidSaenzB",
         urlDemo: "https://www.davidsaenz.dev",
     },
-    {
-        id: 5,
-        image: "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?q=80&w=800&auto=format&fit=crop", // booking/medical theme
-        urlGithub: "https://github.com/DavidSaenzB",
-        urlDemo: "#!",
-    },
-    {
-        id: 6,
-        image: "https://images.unsplash.com/photo-1556740738-b6a63e27c4df?q=80&w=800&auto=format&fit=crop", // e-commerce theme
-        urlGithub: "https://github.com/DavidSaenzB",
-        urlDemo: "#!",
-    },
-    {
-        id: 7,
-        image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=800&auto=format&fit=crop", // hotel / airbnb theme
-        urlGithub: "https://github.com/DavidSaenzB",
-        urlDemo: "#!",
-    },
-    {
-        id: 8,
-        image: "https://images.unsplash.com/photo-1562911791-c7a97b729ec5?q=80&w=800&auto=format&fit=crop", // car rental theme
-        urlGithub: "https://github.com/DavidSaenzB",
-        urlDemo: "#!",
-    },
-    {
-        id: 9,
-        image: "https://images.unsplash.com/photo-1611843467160-25afb8df1074?q=80&w=800&auto=format&fit=crop", // coffee farm AI theme
-        urlGithub: "https://github.com/DavidSaenzB",
-        urlDemo: "#!",
-    },
-    {
-        id: 10,
-        image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop", // ERP / dashboard
-        urlGithub: "https://github.com/DavidSaenzB",
-        urlDemo: "#!",
-    },
-    {
-        id: 11,
-        image: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=800&auto=format&fit=crop", // medical imagery / AI diagnostics (laboratory/hospital)
-        urlGithub: "https://github.com/DavidSaenzB",
-        urlDemo: "#!",
-    }
 ];
 
 export const dataTestimonials = [
