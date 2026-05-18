@@ -101,7 +101,61 @@ export const en = {
                 title: "Web Development",
                 description: "Design and development of custom websites with modern architectures, dynamic interfaces, and a total focus on UX/UI.",
             }
-        ]
+        ],
+        packagesTitle: "Packages",
+        packages: {
+            popularBadge: "Most popular",
+            launchBadge: "Launch price",
+            deliveryLabel: "Delivery",
+            items: [
+                {
+                    name: "Starter — AI Chatbot",
+                    subtitle: "For businesses losing clients to slow replies",
+                    price: "$300 USD",
+                    delivery: "5 days",
+                    features: [
+                        "Trained on your business info",
+                        "Web or WhatsApp integration",
+                        "Up to 5 conversation flows",
+                        "Optional monthly maintenance",
+                    ],
+                    btn: "I want this",
+                    waMsg: "Hola David, me interesa el paquete Starter — Chatbot IA",
+                },
+                {
+                    name: "AI Automation",
+                    subtitle: "For teams with a repetitive manual process",
+                    price: "$500 USD",
+                    delivery: "7-10 days",
+                    features: [
+                        "One end-to-end automated process",
+                        "Integration of your tools",
+                        "Documentation included",
+                    ],
+                    btn: "I want this",
+                    waMsg: "Hola David, me interesa el paquete Automatización IA",
+                },
+                {
+                    name: "AI MVP Sprint",
+                    subtitle: "For founders who want to validate an idea now",
+                    price: "from $1,200 USD",
+                    delivery: "2-3 weeks",
+                    features: [
+                        "Functional MVP",
+                        "Integrated AI",
+                        "Auth & deployment",
+                    ],
+                    btn: "Let's talk",
+                    waMsg: "Hola David, me interesa el AI MVP Sprint",
+                },
+            ],
+        },
+        customTitle: "Custom work",
+        cta: {
+            text: "Let's talk? Message me and I'll reply personally",
+            btn: "Message me on WhatsApp",
+            waMsg: "Hola David, vengo de tu web y quiero hablar sobre un proyecto",
+        },
     },
     portfolio: {
         title1: "My latest ",
@@ -110,16 +164,10 @@ export const en = {
         btnDemo: "Demo",
         items: [
             { title: "ThoraxAI - AI Pulmonary Analysis", description: "Advanced chest X-ray analyzer detecting 18 pathologies using DenseNet-121 deep learning model. Built with React, FastAPI, TorchXRayVision and deployed on HuggingFace + Vercel." },
+            { title: "PyNova — Async Python Academy with AI Tutor", description: "Async Python learning platform with an AI tutor that evaluates real understanding through Socratic dialogue — not multiple-choice quizzes. Instead of measuring memorization, it converses with the student: asks follow-up questions, guides when stuck, and delivers a score with personalized feedback per module. Stack: React 19 + Vite + TypeScript + Tailwind v4 (frontend), Go stdlib REST API (backend), Neon Postgres, Claude Haiku 4.5 via Tetrate AI Router, Resend for transactional emails. Deployed on Vercel + Fly.io + Cloudflare DNS with multi-stage Docker (31 MB final image) and full auth including HttpOnly cross-subdomain cookies." },
             { title: "Spark Dating App (MVP)", description: "Dating app MVP built with React and Node.js. Full-stack application with user matching, profiles and real-time features. Backend powered by Node.js + Express, database with Supabase (PostgreSQL), authentication and real-time subscriptions included." },
             { title: "AuditAI - AI Financial Audit", description: "AI-powered financial auditor for public sector contracts (ICBF Colombia). Automatically analyzes Excel reports and scanned PDF documents detecting budget inconsistencies, banking differences and compliance issues. Built with React, FastAPI and Claude Sonnet via TARS API." },
             { title: "Personal Web Portfolio", description: "Professional portfolio built with Next.js, React, TypeScript and Tailwind CSS. Features bilingual support (EN/ES), animated transitions with Framer Motion, particle effects and a fully responsive design." },
-            { title: "Appointment Booking App", description: "Medical appointment scheduling platform with calendar management, patient profiles and real-time availability. Built with React, Node.js, Express and PostgreSQL." },
-            { title: "Mini E-commerce Store", description: "Compact e-commerce application with product catalog, shopping cart, checkout flow and payment integration. Built with React, Node.js, Express and PostgreSQL." },
-            { title: "Airbnb-style Rental App", description: "Property rental platform with listing management, search filters, booking system and user reviews. Built with React, Node.js, Express and PostgreSQL." },
-            { title: "Car Rental App", description: "Vehicle rental application with fleet management, availability calendar, reservation system and pricing engine. Built with React, Node.js, Express and PostgreSQL." },
-            { title: "AI: Crop Prediction Models", description: "Machine learning models for agricultural crop prediction and yield estimation. Data analysis and classification algorithms using Python, Pandas, Scikit-learn and TensorFlow." },
-            { title: "Commercial Production ERP", description: "Enterprise resource planning system for commercial production management. Modules for inventory, orders, invoicing and financial reporting. Built with React, Node.js and PostgreSQL." },
-            { title: "AI: Medical Image Analysis", description: "Deep learning system for medical image classification and pathology detection. Built with Python, TensorFlow, Keras and computer vision techniques for diagnostic support." }
         ]
     },
     contact: {

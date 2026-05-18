@@ -101,7 +101,61 @@ export const es = {
                 title: "Desarrollo de Páginas Web",
                 description: "Diseño y desarrollo de sitios web a medida, con arquitecturas modernas, interfaces dinámicas y un enfoque total en la experiencia del usuario (UX/UI).",
             }
-        ]
+        ],
+        packagesTitle: "Paquetes",
+        packages: {
+            popularBadge: "Más popular",
+            launchBadge: "Precio de lanzamiento",
+            deliveryLabel: "Entrega",
+            items: [
+                {
+                    name: "Starter — Chatbot IA",
+                    subtitle: "Para negocios que pierden clientes por responder tarde",
+                    price: "$300 USD",
+                    delivery: "5 días",
+                    features: [
+                        "Entrenado con la info de tu negocio",
+                        "Integración web o WhatsApp",
+                        "Hasta 5 flujos de conversación",
+                        "Mantenimiento mensual opcional",
+                    ],
+                    btn: "Lo quiero",
+                    waMsg: "Hola David, me interesa el paquete Starter — Chatbot IA",
+                },
+                {
+                    name: "Automatización IA",
+                    subtitle: "Para equipos con un proceso manual repetitivo",
+                    price: "$500 USD",
+                    delivery: "7-10 días",
+                    features: [
+                        "Un proceso automatizado de punta a punta",
+                        "Conexión de tus herramientas",
+                        "Documentación incluida",
+                    ],
+                    btn: "Lo quiero",
+                    waMsg: "Hola David, me interesa el paquete Automatización IA",
+                },
+                {
+                    name: "AI MVP Sprint",
+                    subtitle: "Para fundadores que quieren validar una idea ya",
+                    price: "desde $1.200 USD",
+                    delivery: "2-3 semanas",
+                    features: [
+                        "MVP funcional",
+                        "IA integrada",
+                        "Autenticación y despliegue",
+                    ],
+                    btn: "Hablemos",
+                    waMsg: "Hola David, me interesa el AI MVP Sprint",
+                },
+            ],
+        },
+        customTitle: "Trabajo a medida",
+        cta: {
+            text: "¿Hablamos? Escríbeme y te respondo personalmente",
+            btn: "Escríbeme por WhatsApp",
+            waMsg: "Hola David, vengo de tu web y quiero hablar sobre un proyecto",
+        },
     },
     portfolio: {
         title1: "Mis últimos ",
@@ -110,16 +164,10 @@ export const es = {
         btnDemo: "Demo",
         items: [
             { title: "ThoraxAI - Análisis Pulmonar IA", description: "Analizador avanzado de radiografías de tórax que detecta 18 patologías usando el modelo de deep learning DenseNet-121. Construido con React, FastAPI, TorchXRayVision y desplegado en HuggingFace + Vercel." },
+            { title: "PyNova — Academia Asíncrona de Python con Tutor IA", description: "Plataforma de aprendizaje asíncrono de Python con tutor de IA que evalúa comprensión real mediante diálogo socrático. En vez de quizzes, conversa con el estudiante: hace preguntas de seguimiento, guía cuando hay dudas y entrega un score con feedback personalizado por módulo. Stack: React 19 + Vite + TypeScript + Tailwind v4 (frontend), Go stdlib API REST (backend), Neon Postgres, Claude Haiku 4.5 vía Tetrate AI Router, Resend para emails transaccionales. Deploy en Vercel + Fly.io + Cloudflare DNS con Docker multi-stage (imagen final 31 MB) y auth completo con cookies HttpOnly cross-subdomain." },
             { title: "Spark Dating App (MVP)", description: "MVP de app de citas construido con React y Node.js. Aplicación full-stack con matching de usuarios, perfiles y funciones en tiempo real. Backend con Node.js + Express, base de datos con Supabase (PostgreSQL), autenticación y suscripciones en tiempo real." },
             { title: "AuditAI - Auditoría Financiera IA", description: "Auditor financiero con IA para contratos del sector público (ICBF Colombia). Analiza automáticamente reportes Excel y documentos PDF escaneados detectando inconsistencias presupuestales, diferencias bancarias y problemas de cumplimiento. Construido con React, FastAPI y Claude Sonnet vía TARS API." },
             { title: "Portfolio Web Personal", description: "Portfolio profesional construido con Next.js, React, TypeScript y Tailwind CSS. Soporte bilingüe (EN/ES), transiciones animadas con Framer Motion, efectos de partículas y diseño totalmente responsivo." },
-            { title: "App Gestor de Turnos Médicos", description: "Plataforma de agendamiento de citas médicas con gestión de calendario, perfiles de pacientes y disponibilidad en tiempo real. Construido con React, Node.js, Express y PostgreSQL." },
-            { title: "Mini E-commerce Store", description: "Aplicación e-commerce compacta con catálogo de productos, carrito de compras, flujo de checkout e integración de pagos. Construido con React, Node.js, Express y PostgreSQL." },
-            { title: "Plataforma Alquiler (Airbnb)", description: "Plataforma de alquiler de propiedades con gestión de listados, filtros de búsqueda, sistema de reservas y reseñas de usuarios. Construido con React, Node.js, Express y PostgreSQL." },
-            { title: "App Alquiler de Carros", description: "Aplicación de alquiler de vehículos con gestión de flota, calendario de disponibilidad, sistema de reservas y motor de precios. Construido con React, Node.js, Express y PostgreSQL." },
-            { title: "IA: Modelos de Cultivos", description: "Modelos de machine learning para predicción de cultivos agrícolas y estimación de rendimiento. Análisis de datos y algoritmos de clasificación con Python, Pandas, Scikit-learn y TensorFlow." },
-            { title: "ERP Producción Comercial", description: "Sistema de planificación de recursos empresariales para gestión de producción comercial. Módulos de inventario, pedidos, facturación y reportes financieros. Construido con React, Node.js y PostgreSQL." },
-            { title: "IA: Imágenes Diagnósticas", description: "Sistema de deep learning para clasificación de imágenes médicas y detección de patologías. Construido con Python, TensorFlow, Keras y técnicas de visión por computadora para apoyo diagnóstico." }
         ]
     },
     contact: {
