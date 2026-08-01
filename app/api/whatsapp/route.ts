@@ -1,15 +1,14 @@
-// Webhook de WhatsApp Business (Meta Cloud API).
-// GET: verificación del webhook. POST: recepción de mensajes.
+// Webhook de WhatsApp Business (Meta Cloud API) — Fase 1: verificación + recepción.
+// GET: responde el challenge de verificación de Meta.
+// POST: valida la firma (fail-closed), deduplica y registra los mensajes entrantes.
+// El pipeline de respuesta (Claude + envío) llega en la Fase 2.
 import { NextRequest, NextResponse } from "next/server";
-import { after } from "next/server";
-import crypto from "crypto";
-import { runAgent } from "@/lib/bot/agent";
-import { sendWhatsAppText } from "@/lib/bot/whatsapp";
-import { alreadyProcessed } from "@/lib/bot/store";
+import { verifySignature } from "@/lib/whatsapp/verify";
+import { claimMessage } from "@/lib/whatsapp/store";
 
-export const maxDuration = 60; // el agente puede tardar varios segundos
+export const runtime = "nodejs"; // la verificación HMAC usa node:crypto
 
-// --- Verificación inicial del webhook (Meta la llama una sola vez al configurarlo) ---
+// --- Verificación del webhook (Meta la llama una sola vez al configurarlo) ---
 export async function GET(req: NextRequest) {
   const params = req.nextUrl.searchParams;
   const mode = params.get("hub.mode");
@@ -17,79 +16,79 @@ export async function GET(req: NextRequest) {
   const challenge = params.get("hub.challenge");
 
   if (mode === "subscribe" && token === process.env.WHATSAPP_VERIFY_TOKEN) {
-    return new NextResponse(challenge, { status: 200 });
+    return new NextResponse(challenge ?? "", { status: 200 }); // texto plano
   }
   return new NextResponse("Forbidden", { status: 403 });
 }
 
 // --- Recepción de mensajes ---
 export async function POST(req: NextRequest) {
-  const rawBody = await req.text();
+  const rawBody = await req.text(); // CRUDO, antes de parsear (la firma es sobre este texto)
 
-  // Validar la firma de Meta (X-Hub-Signature-256) si hay APP_SECRET configurado
-  const appSecret = process.env.WHATSAPP_APP_SECRET;
-  if (appSecret) {
-    const signature = req.headers.get("x-hub-signature-256") ?? "";
-    const expected =
-      "sha256=" + crypto.createHmac("sha256", appSecret).update(rawBody).digest("hex");
-    const valid =
-      signature.length === expected.length &&
-      crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expected));
-    if (!valid) {
-      return new NextResponse("Invalid signature", { status: 401 });
-    }
+  // 1. Firma HMAC fail-closed: sin secret o firma inválida → 403.
+  if (!verifySignature(rawBody, req.headers.get("x-hub-signature-256"))) {
+    return new NextResponse("Forbidden", { status: 403 });
   }
 
+  // 2. Parsear el payload ya verificado.
   let payload: WhatsAppWebhookPayload;
   try {
     payload = JSON.parse(rawBody);
   } catch {
-    return new NextResponse("Bad request", { status: 400 });
+    return new NextResponse("Bad Request", { status: 400 });
   }
 
-  // Extraer mensajes de texto entrantes (ignora estados de entrega, reacciones, etc.)
-  const incoming: { id: string; from: string; text: string }[] = [];
-  for (const entry of payload.entry ?? []) {
-    for (const change of entry.changes ?? []) {
-      for (const msg of change.value?.messages ?? []) {
-        if (msg.type === "text" && msg.text?.body) {
-          incoming.push({ id: msg.id, from: msg.from, text: msg.text.body });
-        }
-      }
+  // 3. Extraer solo mensajes entrantes (ignora los eventos `statuses` de entrega/lectura).
+  const messages = extractMessages(payload);
+
+  // 4. Deduplicar ANTES de responder 200 (Meta reintenta si tardamos o no confirmamos).
+  //    En Fase 2 el procesamiento se colgará aquí con `after(process(msg))`, tras el dedup.
+  for (const msg of messages) {
+    if (await claimMessage(msg.id)) {
+      console.log("[whatsapp] mensaje entrante", {
+        id: msg.id,
+        from: msg.from,
+        type: msg.type,
+      });
+    } else {
+      console.log("[whatsapp] duplicado descartado", { id: msg.id });
     }
   }
 
-  // Responder 200 de inmediato y procesar después (Meta reintenta si tardamos)
-  after(async () => {
-    for (const msg of incoming) {
-      try {
-        if (await alreadyProcessed(msg.id)) continue;
-        const reply = await runAgent(msg.from, msg.text);
-        await sendWhatsAppText(msg.from, reply);
-      } catch (error) {
-        console.error("Error procesando mensaje de WhatsApp:", error);
-        await sendWhatsAppText(
-          msg.from,
-          "Lo siento, tuve un problema técnico. Intenta de nuevo en un momento o escribe a hire@davidsaenz.dev.",
-        );
-      }
-    }
-  });
-
-  return NextResponse.json({ status: "ok" });
+  return NextResponse.json({ status: "received" });
 }
 
-// --- Tipado mínimo del payload de Meta ---
+// Aplana los mensajes entrantes del payload. Si un `change.value` no trae `messages`
+// (p. ej. es un evento `statuses`), se salta: así queda filtrado sin enumerar tipos.
+function extractMessages(payload: WhatsAppWebhookPayload): IncomingMessage[] {
+  const out: IncomingMessage[] = [];
+  for (const entry of payload.entry ?? []) {
+    for (const change of entry.changes ?? []) {
+      const value = change.value;
+      if (!value?.messages) continue;
+      for (const msg of value.messages) {
+        out.push({ id: msg.id, from: msg.from, type: msg.type, text: msg.text?.body });
+      }
+    }
+  }
+  return out;
+}
+
+type IncomingMessage = { id: string; from: string; type: string; text?: string };
+
+// Tipado mínimo del payload de Meta (solo lo que consumimos en esta fase).
 type WhatsAppWebhookPayload = {
   entry?: {
     changes?: {
       value?: {
+        messaging_product?: string;
         messages?: {
           id: string;
           from: string;
           type: string;
           text?: { body: string };
         }[];
+        statuses?: unknown[];
       };
     }[];
   }[];
