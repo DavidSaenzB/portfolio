@@ -2,6 +2,10 @@ export const es = {
     header: {
         logo: "Dev",
     },
+    footer: {
+        privacy: "Política de Privacidad",
+        rights: "Todos los derechos reservados.",
+    },
     intro: {
         line1: "Si puedes pensarlo,",
         typeItems: [
