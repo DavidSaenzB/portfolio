@@ -15,7 +15,7 @@ Welcome to my personal interactive portfolio! Built from the ground up with cutt
 - **🌌 Interactive Canvas:** Immersive and dynamic particle backgrounds deployed using **tsParticles**.
 - **📱 Fully Responsive:** Carefully crafted with Tailwind CSS to look stunning on mobile, tablet, and desktop screens.
 - **✉️ Live Contact Form:** Fully integrated with Formspree and secured with an invisible Honeypot (`_gotcha`) to prevent spam bots without impeding UX.
-- **⚡ Next.js App Router:** Utilizing the latest Next.js 14 architecture for optimal performance, server/client component splitting, and SEO.
+- **⚡ Next.js App Router:** Utilizing the latest Next.js 15 architecture for optimal performance, server/client component splitting, and SEO.
 
 ## 🛠️ Tech Stack
 
@@ -33,7 +33,7 @@ To run this project locally, simply follow these steps:
 1. **Clone the repository:**
    ```bash
    git clone https://github.com/DavidSaenzB/tu-repositorio.git
-   cd my-project
+   cd portfolio
    ```
 
 2. **Install dependencies:**
