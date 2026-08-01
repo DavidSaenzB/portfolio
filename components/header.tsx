@@ -12,7 +12,7 @@ const Header = () => {
       position="bottom"
       className="absolute z-40 w-full top-0 left-0"
     >
-      <header className="bg-darkbg/80 backdrop-blur-md shadow-md">
+      <header className="backdrop-blur-md shadow-md">
         <div className="container mx-auto max-w-6xl px-4
                         flex flex-col items-center gap-4
                         md:flex-row md:justify-between md:items-center">
