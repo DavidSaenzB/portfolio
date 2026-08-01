@@ -1,12 +1,14 @@
-// Webhook de WhatsApp Business (Meta Cloud API) — Fase 1: verificación + recepción.
+// Webhook de WhatsApp Business (Meta Cloud API).
 // GET: responde el challenge de verificación de Meta.
-// POST: valida la firma (fail-closed), deduplica y registra los mensajes entrantes.
-// El pipeline de respuesta (Claude + envío) llega en la Fase 2.
+// POST: valida la firma (fail-closed), deduplica y procesa los mensajes entrantes.
 import { NextRequest, NextResponse } from "next/server";
+import { after } from "next/server";
 import { verifySignature } from "@/lib/whatsapp/verify";
 import { claimMessage } from "@/lib/whatsapp/store";
+import { processMessage, type IncomingMessage } from "@/lib/whatsapp/process";
 
 export const runtime = "nodejs"; // la verificación HMAC usa node:crypto
+export const maxDuration = 60; // el agente puede tardar varios segundos
 
 // --- Verificación del webhook (Meta la llama una sola vez al configurarlo) ---
 export async function GET(req: NextRequest) {
@@ -42,14 +44,10 @@ export async function POST(req: NextRequest) {
   const messages = extractMessages(payload);
 
   // 4. Deduplicar ANTES de responder 200 (Meta reintenta si tardamos o no confirmamos).
-  //    En Fase 2 el procesamiento se colgará aquí con `after(process(msg))`, tras el dedup.
+  //    El procesamiento corre post-respuesta con `after()`, tras el dedup.
   for (const msg of messages) {
     if (await claimMessage(msg.id)) {
-      console.log("[whatsapp] mensaje entrante", {
-        id: msg.id,
-        from: msg.from,
-        type: msg.type,
-      });
+      after(processMessage(msg));
     } else {
       console.log("[whatsapp] duplicado descartado", { id: msg.id });
     }
@@ -74,9 +72,7 @@ function extractMessages(payload: WhatsAppWebhookPayload): IncomingMessage[] {
   return out;
 }
 
-type IncomingMessage = { id: string; from: string; type: string; text?: string };
-
-// Tipado mínimo del payload de Meta (solo lo que consumimos en esta fase).
+// Tipado mínimo del payload de Meta (solo lo que consumimos).
 type WhatsAppWebhookPayload = {
   entry?: {
     changes?: {
