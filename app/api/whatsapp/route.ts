@@ -47,6 +47,9 @@ export async function POST(req: NextRequest) {
   //    El procesamiento corre post-respuesta con `after()`, tras el dedup.
   for (const msg of messages) {
     if (await claimMessage(msg.id)) {
+      // Rastro mínimo de cada mensaje aceptado: sin esto un fallo posterior en el
+      // pipeline no se puede atribuir a un tipo de mensaje ni a un remitente.
+      console.log("[whatsapp] mensaje entrante", { id: msg.id, from: msg.from, type: msg.type });
       after(processMessage(msg));
     } else {
       console.log("[whatsapp] duplicado descartado", { id: msg.id });
@@ -58,30 +61,51 @@ export async function POST(req: NextRequest) {
 
 // Aplana los mensajes entrantes del payload. Si un `change.value` no trae `messages`
 // (p. ej. es un evento `statuses`), se salta: así queda filtrado sin enumerar tipos.
+//
+// El remitente se resuelve para CUALQUIER tipo de mensaje (texto, imagen, audio,
+// sticker, ubicación…): `messages[].from` es la fuente normal y `contacts[0].wa_id`
+// el respaldo cuando Meta manda el mensaje sin `from`. Un mensaje sin remitente
+// resoluble se descarta aquí — si pasara, el pipeline terminaría llamando a Graph
+// con `to` vacío y Graph responde 400 (code 100, "The parameter to is required").
 function extractMessages(payload: WhatsAppWebhookPayload): IncomingMessage[] {
   const out: IncomingMessage[] = [];
   for (const entry of payload.entry ?? []) {
     for (const change of entry.changes ?? []) {
       const value = change.value;
       if (!value?.messages) continue;
+      const fallbackWaId = value.contacts?.[0]?.wa_id?.trim();
       for (const msg of value.messages) {
-        out.push({ id: msg.id, from: msg.from, type: msg.type, text: msg.text?.body });
+        const id = msg.id?.trim();
+        const from = msg.from?.trim() || fallbackWaId;
+        const type = msg.type ?? "unknown";
+        if (!id || !from) {
+          console.error("[whatsapp] mensaje descartado sin id o sin remitente resoluble", {
+            id: msg.id,
+            from: msg.from,
+            type: msg.type,
+            hasContacts: Boolean(value.contacts?.length),
+          });
+          continue;
+        }
+        out.push({ id, from, type, text: msg.text?.body });
       }
     }
   }
   return out;
 }
 
-// Tipado mínimo del payload de Meta (solo lo que consumimos).
+// Tipado mínimo del payload de Meta (solo lo que consumimos). Todo opcional a
+// propósito: es entrada externa y el runtime no la garantiza aunque los docs sí.
 type WhatsAppWebhookPayload = {
   entry?: {
     changes?: {
       value?: {
         messaging_product?: string;
+        contacts?: { wa_id?: string; profile?: { name?: string } }[];
         messages?: {
-          id: string;
-          from: string;
-          type: string;
+          id?: string;
+          from?: string;
+          type?: string;
           text?: { body: string };
         }[];
         statuses?: unknown[];
