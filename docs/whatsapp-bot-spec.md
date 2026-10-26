@@ -58,6 +58,9 @@ Meta Cloud API ──POST──▶ /api/whatsapp (route handler, Node runtime)
    (cortas, `*negrilla*`/`_cursiva_`, nada de Markdown), truncadas a 4096 chars.
 8. Llamadas externas (Graph API, Claude) nunca tumban el pipeline: try/catch, log,
    degradar con el mensaje de fallback.
+9. (Fase 4a) Redis tampoco tumba el webhook: sus errores se registran y se degrada
+   (sin dedup, sin historial, límites permisivos). Excepción consciente al invariante 5:
+   con Redis caído se asume que no hay handoff y el bot responde.
 
 ## 4. Estructura de archivos objetivo
 
@@ -69,8 +72,14 @@ lib/whatsapp/store.ts             # Upstash: dedup, historial, handoff
 lib/whatsapp/claude.ts            # llamada a Claude + normalización + fallback
 lib/whatsapp/graph.ts             # sendText, markRead(+typing), notifyOwner
 lib/whatsapp/process.ts           # pipeline por mensaje
-lib/whatsapp/prompt.ts            # system prompt (Anexo A)
-components/whatsapp-button.tsx    # botón flotante wa.me (fase 4)
+lib/whatsapp/prompt.ts            # system prompt (generado con datos de catalog.ts)
+lib/whatsapp/catalog.ts           # fuente única: paquetes, precios, correo (fase 4a)
+lib/whatsapp/tools.ts             # save_lead activa; agendamiento dormido (fase 4b)
+lib/whatsapp/leads.ts             # save_lead: validar, guardar, avisar (fase 4a)
+lib/whatsapp/limits.ts            # rate limit + tope diario de Claude
+app/api/cron/redis-ping/route.ts  # keep-alive diario de Upstash (fase 4a)
+vercel.json                       # programación del cron
+components/whatsapp-button.tsx    # botón flotante wa.me (fase 4c)
 docs/whatsapp-bot-spec.md         # este documento
 ```
 
@@ -175,9 +184,40 @@ Flag `human:{wa_id}` (TTL 24h), notificación a `OWNER_WA_ID`, endpoint admin
 (POST/GET `/api/whatsapp/admin?wa_id=...&enabled=...` con header `X-Admin-Token`).
 *Done:* con handoff activo el bot calla y David recibe el mensaje reenviado.
 
-**Fase 4 — Conectar la página.**
-`components/whatsapp-button.tsx`: botón flotante con link `wa.me/<número>?text=...`
-prellenado, textos vía `locales/` (ES/EN), estilo consistente con el sitio.
+**Fase 4a — Catálogo, guardrails y leads (PR A).**
+`lib/whatsapp/catalog.ts` como fuente única de los 3 paquetes (Starter $300, AI
+Automation $500, AI MVP Sprint desde $1,200); el bloque del catálogo y las reglas de
+precio del prompt se generan desde ahí. Guardrails: solo esos precios, nada de números
+fuera del catálogo, sin negociación ("el precio final lo confirma David directamente"),
+sin llamadas (cierre por correo o WhatsApp), sin trabajo técnico gratis, único correo
+`hire@davidsaenz.dev`. Tool `save_lead` activa (bucle manual en `claude.ts` con fallback
+sin tools si el proxy no las soporta), lead en `lead:{wa_id}` con TTL 180 días y aviso
+por `notifyOwner`. Redis fail-open en dedup, historial, handoff y límites. Ping diario
+con Vercel Cron (`/api/cron/redis-ping`, `CRON_SECRET`). Política de privacidad §2/§4/§5
+actualizada.
+*Done:* el bot cotiza solo el catálogo, guarda leads y el webhook responde 200 aunque
+Redis esté caído.
+
+> **Nota — "David te responde aquí".** Hoy el bot NO promete que David conteste en el
+> mismo chat: el número vive solo en la Cloud API, sin app ni handoff manual, así que
+> David contacta por correo o WhatsApp. Cuando exista Coexistence (el número también en
+> la app de WhatsApp Business) o el handoff manual de la Fase 3 (endpoint admin), se
+> puede volver a ofrecer "David te responde aquí" en `lib/whatsapp/prompt.ts`.
+
+**PR B — Aviso de leads por correo (Resend).**
+Un notificador de correo agregado a `LEAD_NOTIFIERS` en `lib/whatsapp/leads.ts`.
+Motivo: `notifyOwner` es texto libre de WhatsApp y Meta lo rechaza (error 131047) si el
+número de David no le escribió al bot en las últimas 24 h. Agregar Resend como
+encargado del tratamiento en la política de privacidad (§5).
+
+**Fase 4b — Agendamiento con Google Calendar.**
+Reemplaza las tools de agendamiento desactivadas (`buildSchedulingTools` en `tools.ts`).
+
+**Fase 4c — Conectar la página.**
+`WHATSAPP_NUMBER` en `app/(routes)/services/page.tsx` (hoy vacío: los links caen a
+/contact) y botón flotante `wa.me/<número>?text=...` con textos vía `locales/`. Ojo: los
+`waMsg` de `locales/en.ts` están en español; con la regla de idioma-espejo, un visitante
+en inglés recibiría respuestas en español.
 *Done:* botón visible en davidsaenz.dev abriendo chat con el bot.
 
 **Fase 5 (opcional, después) — Auditoría permanente.**
@@ -204,6 +244,10 @@ Prompt de arranque sugerido por sesión:
 ---
 
 ## Anexo A — System prompt del bot (portar tal cual a `lib/whatsapp/prompt.ts`)
+
+> **Histórico.** El prompt vigente vive en `lib/whatsapp/prompt.ts` (en inglés, con
+> idioma-espejo) y su catálogo y reglas de precio se generan desde `catalog.ts`. Este
+> anexo queda como referencia de la v1; donde contradiga al código, manda el código.
 
 Eres el asistente virtual de David Sáenz (davidsaenz.dev), desarrollador full-stack
 e integrador de IA basado en Cali, Colombia. Atiendes por WhatsApp a personas que

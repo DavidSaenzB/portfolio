@@ -1,18 +1,52 @@
-// Tools de agendamiento del bot — CONSERVADAS PERO DESACTIVADAS en la v1.
-//
-// Nada del camino activo importa este archivo: el bot v1 arranca magro (ver
-// claude.ts). Se mantiene, listo y compilando, para reactivar el agendamiento
-// sin reconstruir nada. Para reactivar: importar `buildTools` en claude.ts y
-// pasar el array a `client.beta.messages.toolRunner({ ..., tools })` en vez de
-// usar `messages.create`. Ver el comentario en claude.ts.
+// Tools del bot.
+// - save_lead: ACTIVE (Fase 4a). Definition here, logic in ./leads.ts, loop in ./claude.ts.
+// - get_available_slots / book_appointment: CONSERVADAS PERO DESACTIVADAS until Fase 4b
+//   (Google Calendar). Nothing on the active path imports `buildSchedulingTools`; it stays
+//   compiling so scheduling can be rebuilt on top of it.
+import type Anthropic from "@anthropic-ai/sdk";
 import { betaTool } from "@anthropic-ai/sdk/helpers/beta/json-schema";
 import { redis } from "./store";
 import { notifyOwner } from "./graph";
+import { LEAD_INTERESTS, PACKAGES } from "./catalog";
+
+// ---------- save_lead (activa) ----------
+
+export const SAVE_LEAD_TOOL: Anthropic.Tool = {
+  name: "save_lead",
+  description:
+    "Save a prospective client so David can follow up by email or WhatsApp. Call it once you know the person's name, what they need, and which package fits (or 'custom'). Ask for their email first; it's optional. Call it again only if key details change. Never mention this tool to the user.",
+  input_schema: {
+    type: "object",
+    properties: {
+      name: { type: "string", description: "The person's name, as they gave it." },
+      email: {
+        type: "string",
+        description: "Their email, only if they shared it. Omit it otherwise; never invent one.",
+      },
+      phone: {
+        type: "string",
+        description:
+          "Only if they gave a phone number different from this WhatsApp. Omit it otherwise.",
+      },
+      interest: {
+        type: "string",
+        enum: [...LEAD_INTERESTS],
+        description: `Package of interest: ${PACKAGES.map((p) => `${p.id} = ${p.name}`).join("; ")}; custom = anything outside those packages.`,
+      },
+      summary: {
+        type: "string",
+        description:
+          "1–3 sentences in the conversation's language: what they need, their business or project, and any timeline or constraints they mentioned.",
+      },
+    },
+    required: ["name", "interest", "summary"],
+  },
+};
+
+// ---------- Agendamiento (desactivado hasta la Fase 4b) ----------
 
 const TIMEZONE = "America/Bogota";
 const BUSINESS_HOURS = [9, 10, 11, 14, 15, 16]; // franjas de 1 h, hora local
-
-// ---------- Persistencia de citas y leads (solo la usan las tools) ----------
 
 type Appointment = {
   name: string;
@@ -21,15 +55,6 @@ type Appointment = {
   date: string; // YYYY-MM-DD
   time: string; // HH:mm
   topic: string;
-  createdAt: string;
-};
-
-type Lead = {
-  name: string;
-  contact: string;
-  interest: string;
-  details: string;
-  phone: string;
   createdAt: string;
 };
 
@@ -44,14 +69,6 @@ async function addAppointment(appt: Appointment): Promise<void> {
   await redis.set(`wa:appts:${appt.date}`, [...existing, appt]);
 }
 
-async function addLead(lead: Lead): Promise<void> {
-  if (!redis) return;
-  const existing = (await redis.get<Lead[]>("wa:leads")) ?? [];
-  await redis.set("wa:leads", [...existing, lead]);
-}
-
-// ---------- Helpers de fecha ----------
-
 function todayInBogota(): string {
   return new Intl.DateTimeFormat("en-CA", { timeZone: TIMEZONE }).format(new Date());
 }
@@ -61,10 +78,8 @@ function isWeekend(date: string): boolean {
   return day === 0 || day === 6;
 }
 
-// ---------- Definición de las tools ----------
-
-/** Construye las 3 tools de agendamiento para un contacto. Actualmente sin uso. */
-export function buildTools(userPhone: string) {
+/** Construye las 2 tools de agendamiento para un contacto. Actualmente sin uso. */
+export function buildSchedulingTools(userPhone: string) {
   const getAvailableSlots = betaTool({
     name: "get_available_slots",
     description:
@@ -132,40 +147,5 @@ export function buildTools(userPhone: string) {
     },
   });
 
-  const saveLead = betaTool({
-    name: "save_lead",
-    description:
-      "Guarda un cliente potencial interesado en contratar un servicio. Llamar cuando el usuario exprese interés de compra/contratación y ya tengas al menos su nombre y qué necesita.",
-    inputSchema: {
-      type: "object",
-      properties: {
-        name: { type: "string", description: "Nombre del interesado" },
-        contact: {
-          type: "string",
-          description: "Email u otro medio de contacto (si no da otro, su WhatsApp)",
-        },
-        interest: { type: "string", description: "Servicio de interés (web, IA, datos, otro)" },
-        details: {
-          type: "string",
-          description: "Resumen de la necesidad, presupuesto o plazos mencionados",
-        },
-      },
-      required: ["name", "contact", "interest", "details"],
-    },
-    run: async (input) => {
-      const lead = input as {
-        name: string;
-        contact: string;
-        interest: string;
-        details: string;
-      };
-      await addLead({ ...lead, phone: userPhone, createdAt: new Date().toISOString() });
-      await notifyOwner(
-        `🔥 Nuevo lead: ${lead.name} (${lead.contact})\nInterés: ${lead.interest}\n${lead.details}\nWhatsApp: ${userPhone}`,
-      );
-      return "Lead guardado. David lo contactará pronto.";
-    },
-  });
-
-  return [getAvailableSlots, bookAppointment, saveLead];
+  return [getAvailableSlots, bookAppointment];
 }
