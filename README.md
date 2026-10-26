@@ -55,7 +55,7 @@ I'm always open to discussing software architecture, AI models, or new Full-Stac
 
 - **GitHub:** [@DavidSaenzB](https://github.com/DavidSaenzB)
 - **LinkedIn:** [David Saenz Bolivar](https://www.linkedin.com/in/david-saenz-bolivar)
-- **Email:** davidsaenzb@gmail.com
+- **Email:** hire@davidsaenz.dev
 
 ---
 *Designed & Engineered with ❤️ by David Saenz.*

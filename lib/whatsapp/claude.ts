@@ -1,11 +1,34 @@
-// Llamada a Claude vía OrcAI (proxy de la API de Anthropic).
+// Llamada a Claude vía OrcAI (proxy de la API de Anthropic), con la tool save_lead.
+//
+// Manual, bounded tool loop instead of the beta toolRunner, for three reasons:
+// - Fallback: if the proxy rejects the request with tools, the same turn is retried
+//   without them, so the bot keeps answering (it just can't save leads).
+// - Budget: every request counts against CLAUDE_DAILY_LIMIT and the loop knows exactly
+//   how many it made.
+// - No beta dependency.
 import Anthropic from "@anthropic-ai/sdk";
 import { SYSTEM_PROMPT } from "./prompt";
+import { SAVE_LEAD_TOOL } from "./tools";
+import { handleSaveLead, type Lead } from "./leads";
 import type { ChatTurn } from "./store";
 
 const TIMEZONE = "America/Bogota";
 const MODEL = process.env.CLAUDE_MODEL ?? "claude-haiku-4-5";
 const MAX_TOKENS = Number(process.env.CLAUDE_MAX_TOKENS ?? 600);
+
+/** Hard cap of Claude requests per incoming message (normal: 1; with save_lead: 2). */
+const MAX_REQUESTS = 3;
+/** After the proxy rejects tools, skip them for a while in this instance to avoid paying twice. */
+const TOOLS_COOLDOWN_MS = 10 * 60 * 1000;
+let toolsDisabledUntil = 0;
+
+// Fixed texts (no Claude involved), bilingual like the pipeline's canned messages.
+const EMPTY_REPLY =
+  "Sorry, I couldn't process your message. Could you say it again?\n\n" +
+  "Lo siento, no pude procesar tu mensaje. ¿Puedes repetirlo?";
+const LEAD_SAVED_REPLY =
+  "Thanks! David will contact you by email or WhatsApp soon 🙌\n\n" +
+  "¡Gracias! David te contacta por correo o WhatsApp muy pronto 🙌";
 
 // baseURL apunta a OrcAI; si no está definido, el SDK usa el endpoint por defecto.
 const client = new Anthropic({
@@ -31,36 +54,134 @@ function normalize(turns: ChatTurn[]): ChatTurn[] {
   return out;
 }
 
-/** Genera la respuesta del bot para un mensaje entrante, dado el historial. */
-export async function generateReply(
-  history: ChatTurn[],
-  userText: string,
-): Promise<string> {
-  const messages = normalize([...history, { role: "user", content: userText }]);
+function buildSystem(existingLead: Lead | null): string {
+  let system = `${SYSTEM_PROMPT}\n\nToday's date: ${todayInBogota()} (${TIMEZONE}).`;
+  if (existingLead) {
+    system +=
+      `\n\nLead status: this contact's lead is already saved (name: ${existingLead.name}; ` +
+      `interest: ${existingLead.interest}; email: ${existingLead.email ? "on file" : "not given"}). ` +
+      "Don't ask again for details they already gave. Call save_lead again only if key details change.";
+  }
+  return system;
+}
 
-  const res = await client.messages.create({
-    model: MODEL,
-    max_tokens: MAX_TOKENS,
-    system: `${SYSTEM_PROMPT}\n\nFecha de hoy: ${todayInBogota()} (${TIMEZONE}).`,
-    messages,
-    // ── Tools de agendamiento DESACTIVADAS ────────────────────────────────────
-    // El bot v1 arranca magro (captura conversacional de leads). Las tools
-    // get_available_slots / book_appointment / save_lead viven, listas, en
-    // ./tools.ts. Para reactivarlas cuando el cliente lo necesite:
-    //   import { buildTools } from "./tools";
-    //   const finalMessage = await client.beta.messages.toolRunner({
-    //     model: MODEL, max_tokens: MAX_TOKENS, system: [...],
-    //     tools: buildTools(waId), messages,
-    //   });
-    // (pasa el wa_id a generateReply y cambia messages.create por el toolRunner.)
-    // ──────────────────────────────────────────────────────────────────────────
-  });
+/** Errors that may mean "this endpoint doesn't accept tools". Confirmed only if the retry without tools works. */
+function mayBeToolsRejection(err: unknown): boolean {
+  return err instanceof Anthropic.APIError && [400, 404, 422, 501].includes(err.status ?? 0);
+}
 
-  const text = res.content
+function extractText(res: Anthropic.Message): string {
+  return res.content
     .filter((b): b is Anthropic.TextBlock => b.type === "text")
     .map((b) => b.text)
     .join("\n")
     .trim();
+}
 
-  return text || "Lo siento, no pude procesar tu mensaje. ¿Puedes repetirlo?";
+export type ReplyInput = {
+  waId: string;
+  history: ChatTurn[];
+  userText: string;
+  existingLead: Lead | null;
+};
+
+export type ReplyResult = {
+  text: string;
+  /** Claude requests made (including failed ones), for the daily budget. */
+  requests: number;
+  leadSaved: boolean;
+};
+
+/** Genera la respuesta del bot para un mensaje entrante, dado el historial. */
+export async function generateReply(input: ReplyInput): Promise<ReplyResult> {
+  const messages: Anthropic.MessageParam[] = normalize([
+    ...input.history,
+    { role: "user", content: input.userText },
+  ]);
+  const base: Anthropic.MessageCreateParamsNonStreaming = {
+    model: MODEL,
+    max_tokens: MAX_TOKENS,
+    system: buildSystem(input.existingLead),
+    messages,
+  };
+  const state = { requests: 0, leadSaved: false };
+
+  let res = await firstRequest(base, state);
+
+  // Tool rounds. The follow-up must carry the tools again: the history now holds
+  // tool_use/tool_result blocks, which the API rejects without a tools definition.
+  while (res.stop_reason === "tool_use" && state.requests < MAX_REQUESTS) {
+    const toolUses = res.content.filter((b): b is Anthropic.ToolUseBlock => b.type === "tool_use");
+    const results: Anthropic.ToolResultBlockParam[] = [];
+    for (const block of toolUses) results.push(await runTool(block, input.waId, state));
+    messages.push({ role: "assistant", content: res.content });
+    messages.push({ role: "user", content: results });
+
+    try {
+      state.requests++;
+      res = await client.messages.create({ ...base, tools: [SAVE_LEAD_TOOL] });
+    } catch (err) {
+      if (!state.leadSaved) throw err;
+      // The lead is already stored: confirm with a fixed text instead of the generic fallback.
+      console.error("[whatsapp] Claude falló después de guardar el lead", err);
+      return { text: LEAD_SAVED_REPLY, ...state };
+    }
+  }
+
+  const text = extractText(res);
+  if (!text) {
+    console.error("[whatsapp] Claude terminó sin texto", { stop_reason: res.stop_reason, ...state });
+    return { text: state.leadSaved ? LEAD_SAVED_REPLY : EMPTY_REPLY, ...state };
+  }
+  return { text, ...state };
+}
+
+/** First request: with tools when available, falling back to a plain request if the proxy rejects them. */
+async function firstRequest(
+  base: Anthropic.MessageCreateParamsNonStreaming,
+  state: { requests: number },
+): Promise<Anthropic.Message> {
+  if (Date.now() < toolsDisabledUntil) {
+    state.requests++;
+    return client.messages.create(base);
+  }
+  try {
+    state.requests++;
+    return await client.messages.create({ ...base, tools: [SAVE_LEAD_TOOL] });
+  } catch (err) {
+    if (!mayBeToolsRejection(err)) throw err;
+    state.requests++;
+    const res = await client.messages.create(base); // if this fails too, tools weren't the problem
+    toolsDisabledUntil = Date.now() + TOOLS_COOLDOWN_MS;
+    console.error(
+      "[whatsapp] el proxy rechazó la request con tools; respondo sin tools " +
+        "(save_lead apagado 10 min en esta instancia)",
+      err,
+    );
+    return res;
+  }
+}
+
+async function runTool(
+  block: Anthropic.ToolUseBlock,
+  waId: string,
+  state: { leadSaved: boolean },
+): Promise<Anthropic.ToolResultBlockParam> {
+  if (block.name !== SAVE_LEAD_TOOL.name) {
+    return {
+      type: "tool_result",
+      tool_use_id: block.id,
+      content: `Unknown tool: ${block.name}`,
+      is_error: true,
+    };
+  }
+  const outcome = await handleSaveLead(waId, block.input);
+  if (outcome.ok) state.leadSaved = true;
+  else console.log("[whatsapp] save_lead rechazado", { waId, reason: outcome.message });
+  return {
+    type: "tool_result",
+    tool_use_id: block.id,
+    content: outcome.message,
+    is_error: !outcome.ok,
+  };
 }

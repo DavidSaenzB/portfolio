@@ -14,7 +14,7 @@ type PrivacyDoc = {
 export const privacyContent: { es: PrivacyDoc; en: PrivacyDoc } = {
   es: {
     title: "Política de Privacidad",
-    lastUpdated: "Última actualización: 1 de agosto de 2026",
+    lastUpdated: "Última actualización: 25 de octubre de 2026",
     intro: [
       "Esta Política de Privacidad describe cómo se recopilan, usan, comparten y protegen los datos personales de las personas que interactúan con el sitio web davidsaenz.dev y con su asistente virtual de WhatsApp (en adelante, «el Servicio»).",
       "Al escribir al asistente de WhatsApp o al usar el sitio, aceptas las prácticas descritas en este documento. Si no estás de acuerdo, por favor no utilices el Servicio.",
@@ -35,6 +35,13 @@ export const privacyContent: { es: PrivacyDoc; en: PrivacyDoc } = {
             "Tu número de teléfono de WhatsApp.",
             "Tu nombre de perfil de WhatsApp.",
             "El contenido de los mensajes que envías al asistente.",
+          ],
+          "Si pides una cotización o expresas interés en contratar un servicio, el asistente también guarda los datos de contacto que compartas voluntariamente, con el único fin de que David pueda contactarte para dar seguimiento a tu solicitud:",
+          [
+            "Tu nombre.",
+            "Tu correo electrónico, si decides darlo.",
+            "Tu número de teléfono (por defecto, el número de WhatsApp desde el que escribes).",
+            "Un resumen de tu proyecto y del paquete o servicio que te interesa.",
           ],
           "Cuando navegas el sitio web, se guarda en tu navegador una preferencia local de idioma (almacenamiento local funcional). El sitio no utiliza cookies de rastreo ni herramientas de analítica publicitaria.",
           "No solicitamos ni tratamos deliberadamente datos sensibles (salud, ideología, etc.), datos de pago, ni documentos de identidad. Te pedimos que no compartas ese tipo de información por el chat.",
@@ -57,6 +64,7 @@ export const privacyContent: { es: PrivacyDoc; en: PrivacyDoc } = {
         heading: "4. Conservación de los datos",
         content: [
           "El historial de conversación se almacena de forma temporal para dar contexto a las respuestas y se elimina automáticamente transcurridas 24 horas (mediante un tiempo de vida —TTL— configurado en la base de datos). Después de ese plazo, el historial se borra de forma automática.",
+          "Los datos de contacto que compartes al pedir una cotización o expresar interés en contratar (nombre, correo electrónico, teléfono y resumen del proyecto) se conservan durante 180 días, solo para contactarte y dar seguimiento a tu solicitud. Pasado ese plazo se eliminan automáticamente (mediante un TTL en la base de datos). Puedes pedir que los eliminemos antes (ver «Cómo ejercer tus derechos»).",
           "No conservamos un registro permanente de las conversaciones. La entrega de los mensajes a través de WhatsApp se rige, además, por las políticas de Meta Platforms.",
         ],
       },
@@ -67,7 +75,7 @@ export const privacyContent: { es: PrivacyDoc; en: PrivacyDoc } = {
           [
             "Meta Platforms, Inc. (WhatsApp Business Platform): entrega y procesamiento de los mensajes de WhatsApp.",
             "Un proveedor de inteligencia artificial (modelo de lenguaje): procesa el contenido de los mensajes para generar las respuestas del asistente.",
-            "Upstash, Inc.: almacenamiento temporal del historial de conversación.",
+            "Upstash, Inc.: almacenamiento temporal del historial de conversación y de los datos de contacto de quienes piden una cotización (hasta 180 días).",
             "Vercel Inc.: alojamiento (hosting) del sitio y de la lógica del asistente.",
           ],
           "No vendemos, alquilamos ni cedemos tus datos personales a terceros con fines comerciales o publicitarios.",
@@ -168,7 +176,7 @@ export const privacyContent: { es: PrivacyDoc; en: PrivacyDoc } = {
   },
   en: {
     title: "Privacy Policy",
-    lastUpdated: "Last updated: August 1, 2026",
+    lastUpdated: "Last updated: October 25, 2026",
     intro: [
       "This Privacy Policy describes how personal data is collected, used, shared, and protected for people who interact with the davidsaenz.dev website and its WhatsApp virtual assistant (the “Service”).",
       "By messaging the WhatsApp assistant or using the website, you accept the practices described in this document. If you do not agree, please do not use the Service.",
@@ -189,6 +197,13 @@ export const privacyContent: { es: PrivacyDoc; en: PrivacyDoc } = {
             "Your WhatsApp phone number.",
             "Your WhatsApp profile name.",
             "The content of the messages you send to the assistant.",
+          ],
+          "If you ask for a quote or express interest in hiring a service, the assistant also stores the contact details you voluntarily share, for the sole purpose of letting David contact you and follow up on your request:",
+          [
+            "Your name.",
+            "Your email address, if you choose to give it.",
+            "Your phone number (by default, the WhatsApp number you are writing from).",
+            "A summary of your project and the package or service you are interested in.",
           ],
           "When you browse the website, a local language preference is stored in your browser (functional local storage). The site does not use tracking cookies or advertising analytics tools.",
           "We do not deliberately request or process sensitive data (health, beliefs, etc.), payment data, or identity documents. Please do not share such information through the chat.",
@@ -211,6 +226,7 @@ export const privacyContent: { es: PrivacyDoc; en: PrivacyDoc } = {
         heading: "4. Data retention",
         content: [
           "Conversation history is stored temporarily to give context to responses and is automatically deleted after 24 hours (via a time-to-live —TTL— configured in the database). After that period, the history is erased automatically.",
+          "The contact details you share when asking for a quote or expressing interest in hiring (name, email, phone number, and project summary) are kept for 180 days, solely to contact you and follow up on your request. After that period they are deleted automatically (via a TTL in the database). You can ask us to delete them sooner (see “How to exercise your rights”).",
           "We do not keep a permanent record of conversations. Message delivery through WhatsApp is also governed by Meta Platforms' policies.",
         ],
       },
@@ -221,7 +237,7 @@ export const privacyContent: { es: PrivacyDoc; en: PrivacyDoc } = {
           [
             "Meta Platforms, Inc. (WhatsApp Business Platform): delivery and processing of WhatsApp messages.",
             "An artificial intelligence provider (language model): processes message content to generate the assistant's responses.",
-            "Upstash, Inc.: temporary storage of conversation history.",
+            "Upstash, Inc.: temporary storage of conversation history and of the contact details of people who ask for a quote (up to 180 days).",
             "Vercel Inc.: hosting of the website and the assistant's logic.",
           ],
           "We do not sell, rent, or transfer your personal data to third parties for commercial or advertising purposes.",

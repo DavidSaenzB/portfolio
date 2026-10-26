@@ -1,53 +1,119 @@
-# 🤖 Chatbot de WhatsApp Business con Claude
+# 🤖 Bot de WhatsApp Business con Claude
 
-Bot integrado en este proyecto Next.js. Responde FAQs sobre los servicios de David, agenda citas, capta leads de ventas y mantiene conversación libre con IA (Claude).
+Bot integrado en este proyecto Next.js. Atiende a quien escribe al número de WhatsApp de
+David: responde dudas sobre los servicios, cotiza **solo** los 3 paquetes del catálogo y
+capta leads (tool `save_lead`). El diseño completo y las fases están en
+[`docs/whatsapp-bot-spec.md`](docs/whatsapp-bot-spec.md).
 
 ## Arquitectura
 
 ```
 WhatsApp → Meta Cloud API → POST /api/whatsapp (webhook en Vercel)
+                                   │  firma HMAC → dedup → 200 → after(processMessage)
+                                   ▼
+                       lib/whatsapp/process.ts  (handoff → rate limit → tipo → budget → Claude)
                                    │
-                                   ├─ lib/bot/agent.ts    → Claude (claude-opus-4-8) + herramientas
-                                   ├─ lib/bot/store.ts    → Upstash Redis (historial, citas, leads)
-                                   └─ lib/bot/whatsapp.ts → respuesta vía Graph API
+          ┌────────────────────────┼─────────────────────────┐
+          ▼                        ▼                         ▼
+   lib/whatsapp/store.ts    lib/whatsapp/claude.ts     lib/whatsapp/graph.ts
+   Upstash Redis            Claude vía OrcAI           Graph API (responder,
+   (dedup, historial,       + tool save_lead           marcar leído, avisos
+   handoff, leads)          → lib/whatsapp/leads.ts    a David)
+
+Vercel Cron (diario) → GET /api/cron/redis-ping → SET en Redis (keep-alive de Upstash)
 ```
 
-Herramientas del agente:
-- `get_available_slots` — consulta franjas libres (L-V, 9:00–17:00 Colombia, sin las 12:00–14:00).
-- `book_appointment` — agenda la cita y te avisa por WhatsApp (si configuras `OWNER_WHATSAPP_NUMBER`).
-- `save_lead` — guarda interesados en contratar y te avisa.
+| Archivo | Rol |
+|---|---|
+| `lib/whatsapp/catalog.ts` | **Fuente única** de paquetes, precios, correo de contacto e intereses de lead. El prompt se genera desde aquí. |
+| `lib/whatsapp/prompt.ts` | System prompt: catálogo, reglas de precio, contención de alcance, cierre, privacidad. |
+| `lib/whatsapp/claude.ts` | Bucle manual de tool use (máx. 3 requests por mensaje) con fallback sin tools. |
+| `lib/whatsapp/tools.ts` | Definición de `save_lead` (activa). Tools de agendamiento desactivadas hasta la Fase 4b. |
+| `lib/whatsapp/leads.ts` | Valida, guarda y avisa. `LEAD_NOTIFIERS` es el punto de extensión para el correo (PR B). |
+| `lib/whatsapp/store.ts` | Redis con fallos que solo se registran (fail-open) y timeout corto por comando. |
+| `lib/whatsapp/limits.ts` | Rate limit por contacto y tope diario de requests a Claude. |
 
-## Configuración paso a paso
+## Reglas de negocio del bot
 
-### 1. Claude API
-1. Crea una API key en https://platform.claude.com → `ANTHROPIC_API_KEY`.
+- Solo cotiza los 3 paquetes de `catalog.ts`. El MVP siempre como "desde $1,200".
+- Fuera del catálogo no da ningún número: David cotiza según el alcance.
+- No negocia ni rebaja: "el precio final lo confirma David directamente".
+- No ofrece llamadas. Cierre: "David te contacta por correo o WhatsApp".
+- No hace trabajo técnico gratis (código, ejercicios, asistente general). Además del prompt,
+  `process.ts` reemplaza cualquier respuesta que traiga un bloque de código.
+- El único correo que puede dar es `hire@davidsaenz.dev`.
+
+Para cambiar un precio o un paquete, edita **solo** `catalog.ts`. (Las tarjetas de
+`/services` en `locales/` todavía duplican los precios; se conectan en un PR aparte.)
+
+## Configuración
+
+### 1. Claude (vía OrcAI)
+- `ANTHROPIC_API_KEY` y `ANTHROPIC_BASE_URL` (endpoint del proxy; vacío = API directa).
+- `CLAUDE_MODEL` (por defecto `claude-haiku-4-5`) y `CLAUDE_MAX_TOKENS`.
+- Si el proxy rechaza las requests con tools, el bot responde igual sin ellas (y sin
+  guardar leads). Queda en el log: `el proxy rechazó la request con tools`.
 
 ### 2. Meta / WhatsApp Business
-1. Entra a https://developers.facebook.com → **My Apps → Create App** → tipo **Business**.
-2. Agrega el producto **WhatsApp** a la app. Meta te da un **número de prueba** gratuito y un token temporal (24h) para desarrollar.
-3. Copia:
+1. En https://developers.facebook.com, en la app de tipo Business con el producto WhatsApp, copia:
    - **Phone Number ID** → `WHATSAPP_PHONE_NUMBER_ID`
-   - **Token de acceso** → `WHATSAPP_ACCESS_TOKEN` (para producción crea un *System User* en Business Settings y genera un token permanente con permiso `whatsapp_business_messaging`)
-   - **App Secret** (App Settings → Basic) → `WHATSAPP_APP_SECRET`
-4. Inventa un token de verificación cualquiera → `WHATSAPP_VERIFY_TOKEN`.
+   - Token permanente de *System User* (permiso `whatsapp_business_messaging`) → `WHATSAPP_ACCESS_TOKEN`
+   - **App Secret** (App Settings → Basic) → `WHATSAPP_APP_SECRET` (obligatorio: sin él, todo POST da 403)
+2. Inventa un token de verificación (`openssl rand -hex 32`) → `WHATSAPP_VERIFY_TOKEN`.
+3. Webhook: Callback URL `https://www.davidsaenz.dev/api/whatsapp`, el mismo verify token,
+   y suscripción al campo `messages`.
 
-### 3. Upstash Redis (persistencia)
-1. En Vercel: **Storage → Marketplace → Upstash Redis** (plan gratuito), o directo en https://upstash.com.
-2. Copia `UPSTASH_REDIS_REST_URL` y `UPSTASH_REDIS_REST_TOKEN`.
-3. Sin estas variables el bot funciona igual pero sin memoria persistente (solo para pruebas locales).
+### 3. Upstash Redis
+- Integración de Upstash en el marketplace de Vercel. Inyecta
+  `UPSTASH_REDIS_KV_REST_API_URL` y `UPSTASH_REDIS_KV_REST_API_TOKEN`.
+- Sin ellas el bot funciona sin persistencia (solo para pruebas locales).
 
-### 4. Desplegar y conectar el webhook
-1. Añade todas las variables de `env.example` en Vercel (**Settings → Environment Variables**) y despliega.
-2. En Meta: **WhatsApp → Configuration → Webhook**:
-   - **Callback URL**: `https://www.davidsaenz.dev/api/whatsapp`
-   - **Verify token**: el mismo valor de `WHATSAPP_VERIFY_TOKEN`
-   - Dale a **Verify and save** (Meta hace un GET que este proyecto ya responde).
-3. En **Webhook fields** suscríbete a `messages`.
-4. Escribe al número de prueba desde tu WhatsApp y el bot responde. 🎉
+### 4. Avisos a David
+- `OWNER_WHATSAPP_NUMBER`: tu número personal (formato `573001234567`).
+- ⚠️ Es texto libre: Meta solo lo entrega si ese número le escribió al bot en las
+  **últimas 24 h**. Si no, Graph responde **131047** y el aviso se pierde (queda en el
+  log). Los leads igual quedan en Redis. El aviso por correo (Resend) llega en el PR B.
 
-### 5. Pasar a producción (número real)
-- Verifica tu negocio en Meta Business Manager y registra tu número propio (no puede estar activo en la app normal de WhatsApp).
-- Nota: con la Cloud API, el bot puede responder libremente dentro de las **24 horas** siguientes al último mensaje del usuario; fuera de esa ventana solo se pueden enviar plantillas aprobadas.
+### 5. Cron de keep-alive
+- `CRON_SECRET` en Vercel (`openssl rand -hex 32`). Vercel lo manda como
+  `Authorization: Bearer …` a `/api/cron/redis-ping`, programado en `vercel.json`
+  una vez al día (Hobby solo permite crons diarios).
+- Si Redis falla, la ruta responde 503 y la ejecución sale en rojo en
+  **Vercel → Settings → Cron Jobs**.
+
+### 6. Límites
+- `RL_MAX_PER_HOUR` (por contacto) y `CLAUDE_DAILY_LIMIT` (requests a Claude por día;
+  un mensaje que guarda un lead usa 2).
+
+## Si Redis se cae
+
+El webhook sigue respondiendo 200 y el bot sigue contestando:
+
+| Pieza | Comportamiento con Redis caído |
+|---|---|
+| Dedup | Procesa sin dedup |
+| Historial | Responde sin contexto y no guarda |
+| Handoff | Asume que no hay handoff (el bot responde) |
+| Rate limit / tope diario | Dejan pasar (riesgo aceptado: sin tope de gasto mientras dure la caída) |
+| Leads | Solo salen por los avisos; se registra `el lead NO quedó guardado en Redis` |
+
+Cada comando tiene un timeout de 2 s con 1 reintento, para no demorar el 200 a Meta.
+Todo error queda en el log como `[whatsapp] Redis falló en <operación>`.
+
+## Datos guardados en Redis
+
+| Clave | Contenido | TTL |
+|---|---|---|
+| `dedup:{message_id}` | Marca de mensaje ya procesado | 24 h |
+| `chat:{wa_id}` | Historial (últimos 40 turnos) | 24 h |
+| `human:{wa_id}` | Flag de handoff | 24 h |
+| `rl:{wa_id}:{hora}`, `rl:notified:{wa_id}` | Rate limit | 1 h |
+| `budget:claude:{fecha}`, `budget:alerted:{fecha}` | Tope diario | 48 h |
+| `lead:{wa_id}` | Lead: nombre, email, teléfono, interés, resumen, fechas | **180 días** (política de privacidad §4) |
+| `leads:index` | Sorted set wa_id → timestamp, recortado a 180 días | 180 días |
+| `health:redis-ping` | Último ping del cron | 7 días |
+
+Para ver los leads: consola de Upstash → Data Browser → `lead:*`, o `ZRANGE leads:index 0 -1`.
 
 ## Probar en local
 
@@ -58,12 +124,9 @@ npm run dev
 # y usa esa URL https como Callback URL temporal en Meta
 ```
 
-## Costos aproximados
-- **Claude** (`claude-opus-4-8`): $5 entrada / $25 salida por millón de tokens. Una conversación típica de WhatsApp gasta centavos. Si el volumen crece, se puede bajar a `claude-sonnet-5` o `claude-haiku-4-5` cambiando `MODEL` en `lib/bot/agent.ts`.
-- **WhatsApp Cloud API**: las conversaciones iniciadas por el usuario (service) son gratuitas en la mayoría de países; las iniciadas por plantilla tienen costo.
+## Costos
+- **Claude**: depende de `CLAUDE_MODEL` (Haiku 4.5 por defecto). Cada mensaje es 1 request,
+  o 2 si se guarda un lead. El tope diario corta en `CLAUDE_DAILY_LIMIT`.
+- **WhatsApp Cloud API**: las conversaciones iniciadas por el usuario son gratuitas en la
+  mayoría de países; las iniciadas con plantilla tienen costo.
 - **Upstash / Vercel**: planes gratuitos suficientes para empezar.
-
-## Datos guardados en Redis
-- `wa:hist:{telefono}` — historial de conversación (últimos 30 turnos, expira a 30 días).
-- `wa:appts:{fecha}` — citas del día.
-- `wa:leads` — lista de leads captados.
