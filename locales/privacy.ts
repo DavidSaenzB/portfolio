@@ -14,7 +14,7 @@ type PrivacyDoc = {
 export const privacyContent: { es: PrivacyDoc; en: PrivacyDoc } = {
   es: {
     title: "Política de Privacidad",
-    lastUpdated: "Última actualización: 25 de octubre de 2026",
+    lastUpdated: "Última actualización: 26 de octubre de 2026",
     intro: [
       "Esta Política de Privacidad describe cómo se recopilan, usan, comparten y protegen los datos personales de las personas que interactúan con el sitio web davidsaenz.dev y con su asistente virtual de WhatsApp (en adelante, «el Servicio»).",
       "Al escribir al asistente de WhatsApp o al usar el sitio, aceptas las prácticas descritas en este documento. Si no estás de acuerdo, por favor no utilices el Servicio.",
@@ -24,7 +24,7 @@ export const privacyContent: { es: PrivacyDoc; en: PrivacyDoc } = {
         heading: "1. Responsable del tratamiento",
         content: [
           "El responsable del tratamiento de tus datos es David Sáenz, desarrollador independiente (persona natural), con contacto en:",
-          ["Correo electrónico: contact@davidsaenz.dev", "Sitio web: https://www.davidsaenz.dev"],
+          ["Correo electrónico: hire@davidsaenz.dev", "Sitio web: https://www.davidsaenz.dev"],
         ],
       },
       {
@@ -64,7 +64,7 @@ export const privacyContent: { es: PrivacyDoc; en: PrivacyDoc } = {
         heading: "4. Conservación de los datos",
         content: [
           "El historial de conversación se almacena de forma temporal para dar contexto a las respuestas y se elimina automáticamente transcurridas 24 horas (mediante un tiempo de vida —TTL— configurado en la base de datos). Después de ese plazo, el historial se borra de forma automática.",
-          "Los datos de contacto que compartes al pedir una cotización o expresar interés en contratar (nombre, correo electrónico, teléfono y resumen del proyecto) se conservan durante 180 días, solo para contactarte y dar seguimiento a tu solicitud. Pasado ese plazo se eliminan automáticamente (mediante un TTL en la base de datos). Puedes pedir que los eliminemos antes (ver «Cómo ejercer tus derechos»).",
+          "Los datos de contacto que compartes al pedir una cotización o expresar interés en contratar (nombre, correo electrónico, teléfono y resumen del proyecto) se guardan en el sistema del asistente durante 180 días, solo para contactarte y dar seguimiento a tu solicitud, y pasado ese plazo se eliminan automáticamente (mediante un TTL en la base de datos). Además, cada solicitud genera una notificación que se envía al correo de contacto de David; esas notificaciones se conservan mientras sean necesarias para dar seguimiento a tu solicitud. Puedes pedir la eliminación de tus datos, incluidas esas notificaciones, en cualquier momento escribiendo a hire@davidsaenz.dev.",
           "No conservamos un registro permanente de las conversaciones. La entrega de los mensajes a través de WhatsApp se rige, además, por las políticas de Meta Platforms.",
         ],
       },
@@ -77,6 +77,7 @@ export const privacyContent: { es: PrivacyDoc; en: PrivacyDoc } = {
             "Un proveedor de inteligencia artificial (modelo de lenguaje): procesa el contenido de los mensajes para generar las respuestas del asistente.",
             "Upstash, Inc.: almacenamiento temporal del historial de conversación y de los datos de contacto de quienes piden una cotización (hasta 180 días).",
             "Vercel Inc.: alojamiento (hosting) del sitio y de la lógica del asistente.",
+            "Resend, Inc.: envío de los correos internos con los que se notifica a David de cada nueva solicitud de contacto.",
           ],
           "No vendemos, alquilamos ni cedemos tus datos personales a terceros con fines comerciales o publicitarios.",
         ],
@@ -136,7 +137,7 @@ export const privacyContent: { es: PrivacyDoc; en: PrivacyDoc } = {
       {
         heading: "10. Cómo ejercer tus derechos",
         content: [
-          "Para ejercer cualquiera de los derechos anteriores, escríbenos a contact@davidsaenz.dev indicando tu solicitud y un medio para verificar tu identidad (por ejemplo, el número de WhatsApp desde el que escribiste). Atenderemos tu solicitud en los plazos que exija la normativa aplicable.",
+          "Para ejercer cualquiera de los derechos anteriores, escríbenos a hire@davidsaenz.dev indicando tu solicitud y un medio para verificar tu identidad (por ejemplo, el número de WhatsApp desde el que escribiste). Atenderemos tu solicitud en los plazos que exija la normativa aplicable.",
         ],
       },
       {
@@ -155,7 +156,7 @@ export const privacyContent: { es: PrivacyDoc; en: PrivacyDoc } = {
       {
         heading: "13. Menores de edad",
         content: [
-          "El Servicio está dirigido a personas mayores de edad. No recopilamos de forma consciente datos de menores. Si crees que un menor nos ha proporcionado datos personales, escríbenos a contact@davidsaenz.dev y los eliminaremos.",
+          "El Servicio está dirigido a personas mayores de edad. No recopilamos de forma consciente datos de menores. Si crees que un menor nos ha proporcionado datos personales, escríbenos a hire@davidsaenz.dev y los eliminaremos.",
         ],
       },
       {
@@ -167,7 +168,7 @@ export const privacyContent: { es: PrivacyDoc; en: PrivacyDoc } = {
       {
         heading: "15. Contacto",
         content: [
-          "Si tienes preguntas sobre esta política o sobre el tratamiento de tus datos, contáctanos en contact@davidsaenz.dev.",
+          "Si tienes preguntas sobre esta política o sobre el tratamiento de tus datos, contáctanos en hire@davidsaenz.dev.",
         ],
       },
     ],
@@ -176,7 +177,7 @@ export const privacyContent: { es: PrivacyDoc; en: PrivacyDoc } = {
   },
   en: {
     title: "Privacy Policy",
-    lastUpdated: "Last updated: October 25, 2026",
+    lastUpdated: "Last updated: October 26, 2026",
     intro: [
       "This Privacy Policy describes how personal data is collected, used, shared, and protected for people who interact with the davidsaenz.dev website and its WhatsApp virtual assistant (the “Service”).",
       "By messaging the WhatsApp assistant or using the website, you accept the practices described in this document. If you do not agree, please do not use the Service.",
@@ -186,7 +187,7 @@ export const privacyContent: { es: PrivacyDoc; en: PrivacyDoc } = {
         heading: "1. Data Controller",
         content: [
           "The controller responsible for processing your data is David Sáenz, an independent developer (natural person), reachable at:",
-          ["Email: contact@davidsaenz.dev", "Website: https://www.davidsaenz.dev"],
+          ["Email: hire@davidsaenz.dev", "Website: https://www.davidsaenz.dev"],
         ],
       },
       {
@@ -226,7 +227,7 @@ export const privacyContent: { es: PrivacyDoc; en: PrivacyDoc } = {
         heading: "4. Data retention",
         content: [
           "Conversation history is stored temporarily to give context to responses and is automatically deleted after 24 hours (via a time-to-live —TTL— configured in the database). After that period, the history is erased automatically.",
-          "The contact details you share when asking for a quote or expressing interest in hiring (name, email, phone number, and project summary) are kept for 180 days, solely to contact you and follow up on your request. After that period they are deleted automatically (via a TTL in the database). You can ask us to delete them sooner (see “How to exercise your rights”).",
+          "The contact details you share when asking for a quote or expressing interest in hiring (name, email, phone number, and project summary) are stored in the assistant's system for 180 days, solely to contact you and follow up on your request, and are deleted automatically after that period (via a TTL in the database). In addition, each request generates a notification sent to David's contact email; those notifications are kept for as long as needed to follow up on your request. You can ask for your data, including those notifications, to be deleted at any time by writing to hire@davidsaenz.dev.",
           "We do not keep a permanent record of conversations. Message delivery through WhatsApp is also governed by Meta Platforms' policies.",
         ],
       },
@@ -239,6 +240,7 @@ export const privacyContent: { es: PrivacyDoc; en: PrivacyDoc } = {
             "An artificial intelligence provider (language model): processes message content to generate the assistant's responses.",
             "Upstash, Inc.: temporary storage of conversation history and of the contact details of people who ask for a quote (up to 180 days).",
             "Vercel Inc.: hosting of the website and the assistant's logic.",
+            "Resend, Inc.: delivery of the internal emails that notify David of each new contact request.",
           ],
           "We do not sell, rent, or transfer your personal data to third parties for commercial or advertising purposes.",
         ],
@@ -298,7 +300,7 @@ export const privacyContent: { es: PrivacyDoc; en: PrivacyDoc } = {
       {
         heading: "10. How to exercise your rights",
         content: [
-          "To exercise any of the rights above, write to contact@davidsaenz.dev stating your request and a way to verify your identity (for example, the WhatsApp number you messaged from). We will handle your request within the timeframes required by applicable law.",
+          "To exercise any of the rights above, write to hire@davidsaenz.dev stating your request and a way to verify your identity (for example, the WhatsApp number you messaged from). We will handle your request within the timeframes required by applicable law.",
         ],
       },
       {
@@ -317,7 +319,7 @@ export const privacyContent: { es: PrivacyDoc; en: PrivacyDoc } = {
       {
         heading: "13. Minors",
         content: [
-          "The Service is intended for adults. We do not knowingly collect data from minors. If you believe a minor has provided us with personal data, write to contact@davidsaenz.dev and we will delete it.",
+          "The Service is intended for adults. We do not knowingly collect data from minors. If you believe a minor has provided us with personal data, write to hire@davidsaenz.dev and we will delete it.",
         ],
       },
       {
@@ -329,7 +331,7 @@ export const privacyContent: { es: PrivacyDoc; en: PrivacyDoc } = {
       {
         heading: "15. Contact",
         content: [
-          "If you have questions about this policy or about how your data is processed, contact us at contact@davidsaenz.dev.",
+          "If you have questions about this policy or about how your data is processed, contact us at hire@davidsaenz.dev.",
         ],
       },
     ],

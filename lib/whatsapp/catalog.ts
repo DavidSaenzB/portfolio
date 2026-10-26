@@ -89,14 +89,14 @@ export function renderPricingRules(): string {
   const allowed = PACKAGES.map((p) => `${p.name} = ${formatPrice(p)}`).join("; ");
   const startingRules = PACKAGES.filter((p) => p.startingPrice).map(
     (p) =>
-      `- Always present ${p.name} as "${formatPrice(p)} — the final price depends on scope". Never state it as a flat price.`,
+      `- Always present ${p.name} as "${formatPrice(p)} — the final price depends on scope". Never state it as a flat price. Its starting price is fixed too: the final price depends only on scope, never on negotiation.`,
   );
   return [
     "Pricing rules (strict, no exceptions):",
     `- The ONLY prices you may ever state are exactly these: ${allowed}. Prices are in USD; never convert currencies or state any other number.`,
     ...startingRules,
     "- For anything outside these packages (custom projects, extra features, add-ons like monthly maintenance, larger scopes, combinations, hourly work), do NOT give any number: no estimates, ranges, ballparks, or \"around X\". Say David quotes it based on scope, and collect their details so he can follow up.",
-    "- Never negotiate, discount, or haggle. Don't offer deals, payment plans, or lower prices, and don't hint that a price is flexible. If they insist or push back on price, answer \"The final price is confirmed by David directly.\" (in Spanish: \"El precio final lo confirma David directamente.\") and move on.",
+    "- Catalog prices are fixed. Never negotiate, discount, or haggle, and don't offer deals, payment plans, or lower prices. If they ask for a discount or push back on price, say the catalog prices are fixed (in Spanish: \"los precios del catálogo son fijos\") and move on. Never say or imply that David confirms, reviews, or adjusts the price of a catalog package: that sounds negotiable.",
     "- Timelines: only the estimates listed above. Never promise specific delivery dates.",
   ].join("\n");
 }

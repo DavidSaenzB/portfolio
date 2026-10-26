@@ -29,7 +29,8 @@ Vercel Cron (diario) → GET /api/cron/redis-ping → SET en Redis (keep-alive d
 | `lib/whatsapp/prompt.ts` | System prompt: catálogo, reglas de precio, contención de alcance, cierre, privacidad. |
 | `lib/whatsapp/claude.ts` | Bucle manual de tool use (máx. 3 requests por mensaje) con fallback sin tools. |
 | `lib/whatsapp/tools.ts` | Definición de `save_lead` (activa). Tools de agendamiento desactivadas hasta la Fase 4b. |
-| `lib/whatsapp/leads.ts` | Valida, guarda y avisa. `LEAD_NOTIFIERS` es el punto de extensión para el correo (PR B). |
+| `lib/whatsapp/leads.ts` | Valida, guarda y avisa. `LEAD_NOTIFIERS` = WhatsApp a David + correo; un canal nuevo se agrega ahí. |
+| `lib/whatsapp/email.ts` | `sendLeadEmail`: correo de cada lead vía Resend (fetch nativo, fail-open). |
 | `lib/whatsapp/store.ts` | Redis con fallos que solo se registran (fail-open) y timeout corto por comando. |
 | `lib/whatsapp/limits.ts` | Rate limit por contacto y tope diario de requests a Claude. |
 
@@ -37,7 +38,9 @@ Vercel Cron (diario) → GET /api/cron/redis-ping → SET en Redis (keep-alive d
 
 - Solo cotiza los 3 paquetes de `catalog.ts`. El MVP siempre como "desde $1,200".
 - Fuera del catálogo no da ningún número: David cotiza según el alcance.
-- No negocia ni rebaja: "el precio final lo confirma David directamente".
+- No negocia ni rebaja: "los precios del catálogo son fijos". Nunca dice que David
+  "confirma el precio final" de un paquete publicado (suena negociable).
+- En español siempre tutea (tienes, quieres, cuéntame); nunca voseo.
 - No ofrece llamadas. Cierre: "David te contacta por correo o WhatsApp".
 - No hace trabajo técnico gratis (código, ejercicios, asistente general). Además del prompt,
   `process.ts` reemplaza cualquier respuesta que traiga un bloque de código.
@@ -69,10 +72,28 @@ Para cambiar un precio o un paquete, edita **solo** `catalog.ts`. (Las tarjetas 
 - Sin ellas el bot funciona sin persistencia (solo para pruebas locales).
 
 ### 4. Avisos a David
+Cada lead nuevo (o actualizado con datos distintos) dispara dos avisos en paralelo
+(`Promise.allSettled`): si uno falla, el otro sale igual y el cliente recibe su respuesta.
+
+**WhatsApp**
 - `OWNER_WHATSAPP_NUMBER`: tu número personal (formato `573001234567`).
 - ⚠️ Es texto libre: Meta solo lo entrega si ese número le escribió al bot en las
   **últimas 24 h**. Si no, Graph responde **131047** y el aviso se pierde (queda en el
-  log). Los leads igual quedan en Redis. El aviso por correo (Resend) llega en el PR B.
+  log). Por eso existe el correo.
+
+**Correo (Resend)**
+- `RESEND_API_KEY`: API key de Resend. El dominio `davidsaenz.dev` debe estar verificado.
+- Remitente `Bot David <bot@davidsaenz.dev>`, destinatario `hire@davidsaenz.dev`
+  (`CONTACT_EMAIL` de `catalog.ts`). Si el lead dio email, va como `reply_to`:
+  responder el correo le escribe directo al cliente.
+- Asunto: `🔔 Nuevo lead — <paquete o "A medida"> — <nombre>` (o `🔁 Lead actualizado — …`).
+  El cuerpo (texto y HTML) trae nombre, email, teléfono, wa_id, interés, resumen,
+  fechas en hora de Bogotá y el link `https://wa.me/<wa_id>`.
+- Fail-open: sin key se omite con `[lead-email] RESEND_API_KEY no configurada…`. Si
+  Resend responde no-2xx o pasa el timeout de 5 s, se registra `[lead-email]` con el
+  status y el cuerpo, sin lanzar. La key nunca se registra.
+
+En cualquier caso el lead queda en Redis (`lead:{wa_id}`).
 
 ### 5. Cron de keep-alive
 - `CRON_SECRET` en Vercel (`openssl rand -hex 32`). Vercel lo manda como

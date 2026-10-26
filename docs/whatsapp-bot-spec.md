@@ -76,6 +76,7 @@ lib/whatsapp/prompt.ts            # system prompt (generado con datos de catalog
 lib/whatsapp/catalog.ts           # fuente única: paquetes, precios, correo (fase 4a)
 lib/whatsapp/tools.ts             # save_lead activa; agendamiento dormido (fase 4b)
 lib/whatsapp/leads.ts             # save_lead: validar, guardar, avisar (fase 4a)
+lib/whatsapp/email.ts             # correo de cada lead vía Resend (PR B)
 lib/whatsapp/limits.ts            # rate limit + tope diario de Claude
 app/api/cron/redis-ping/route.ts  # keep-alive diario de Upstash (fase 4a)
 vercel.json                       # programación del cron
@@ -188,7 +189,7 @@ Flag `human:{wa_id}` (TTL 24h), notificación a `OWNER_WA_ID`, endpoint admin
 `lib/whatsapp/catalog.ts` como fuente única de los 3 paquetes (Starter $300, AI
 Automation $500, AI MVP Sprint desde $1,200); el bloque del catálogo y las reglas de
 precio del prompt se generan desde ahí. Guardrails: solo esos precios, nada de números
-fuera del catálogo, sin negociación ("el precio final lo confirma David directamente"),
+fuera del catálogo, sin negociación ("los precios del catálogo son fijos"; desde el PR B),
 sin llamadas (cierre por correo o WhatsApp), sin trabajo técnico gratis, único correo
 `hire@davidsaenz.dev`. Tool `save_lead` activa (bucle manual en `claude.ts` con fallback
 sin tools si el proxy no las soporta), lead en `lead:{wa_id}` con TTL 180 días y aviso
@@ -205,10 +206,23 @@ Redis esté caído.
 > puede volver a ofrecer "David te responde aquí" en `lib/whatsapp/prompt.ts`.
 
 **PR B — Aviso de leads por correo (Resend).**
-Un notificador de correo agregado a `LEAD_NOTIFIERS` en `lib/whatsapp/leads.ts`.
-Motivo: `notifyOwner` es texto libre de WhatsApp y Meta lo rechaza (error 131047) si el
-número de David no le escribió al bot en las últimas 24 h. Agregar Resend como
-encargado del tratamiento en la política de privacidad (§5).
+`lib/whatsapp/email.ts` (`sendLeadEmail`) registrado en `LEAD_NOTIFIERS` junto al aviso
+por WhatsApp. Motivo: `notifyOwner` es texto libre de WhatsApp y Meta lo rechaza (error
+131047) si el número de David no le escribió al bot en las últimas 24 h; el correo no
+depende de esa ventana.
+- Variable `RESEND_API_KEY` (opcional). Envío con fetch nativo a la API REST de Resend
+  (sin SDK), timeout de 5 s.
+- Remitente `Bot David <bot@davidsaenz.dev>` (dominio verificado en Resend), destinatario
+  `hire@davidsaenz.dev` (`CONTACT_EMAIL`), `reply_to` = email del lead si lo dio.
+- Asunto `🔔 Nuevo lead — <paquete | "A medida"> — <nombre>` / `🔁 Lead actualizado — …`;
+  cuerpo en texto y HTML con todo lo que viene del cliente escapado.
+- Fail-open: sin key → `console.warn` y se omite; no-2xx o timeout → `console.error` con
+  status y cuerpo, sin lanzar. Los notificadores corren con `Promise.allSettled`, así que
+  ninguno bloquea al otro ni la respuesta al cliente.
+- Política de privacidad: Resend agregado como encargado (§5).
+- Ajustes de prompt del mismo PR: los precios del catálogo son fijos (nunca "David
+  confirma el precio final" de un paquete publicado), y en español siempre tú, nunca voseo.
+*Done:* cada lead llega a hire@ por correo aunque la ventana de 24 h de WhatsApp esté cerrada.
 
 **Fase 4b — Agendamiento con Google Calendar.**
 Reemplaza las tools de agendamiento desactivadas (`buildSchedulingTools` en `tools.ts`).

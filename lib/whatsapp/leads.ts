@@ -1,8 +1,9 @@
 // Lead capture behind the save_lead tool: validate → persist (Redis, 180-day TTL) → notify.
 //
-// Extension point: notifiers are pluggable. PR B (Resend) only appends its email
-// notifier to LEAD_NOTIFIERS; the tool, the loop in claude.ts and the storage stay as is.
+// Extension point: notifiers are pluggable. A new channel only needs to be appended to
+// LEAD_NOTIFIERS; the tool, the loop in claude.ts and the storage stay as is.
 import { notifyOwner } from "./graph";
+import { sendLeadEmail } from "./email";
 import { getLead, putLead } from "./store";
 import { LEAD_INTERESTS, PACKAGES, type LeadInterest } from "./catalog";
 
@@ -24,14 +25,16 @@ export type LeadNotifier = {
 };
 
 // Only reaches David while the 24 h window with the bot number is open (Graph error
-// 131047 otherwise; graph.ts logs it). That's why PR B adds email.
+// 131047 otherwise; graph.ts logs it). That's why email (Resend) runs alongside it.
 const whatsappOwnerNotifier: LeadNotifier = {
   name: "whatsapp-owner",
   notify: (lead, isNew) => notifyOwner(formatLeadMessage(lead, isNew)),
 };
 
-// PR B: append the Resend notifier here, e.g. `{ name: "email", notify: sendLeadEmail }`.
-export const LEAD_NOTIFIERS: LeadNotifier[] = [whatsappOwnerNotifier];
+// Email to CONTACT_EMAIL via Resend (./email.ts); skipped with a warning if RESEND_API_KEY is unset.
+const emailNotifier: LeadNotifier = { name: "email", notify: sendLeadEmail };
+
+export const LEAD_NOTIFIERS: LeadNotifier[] = [whatsappOwnerNotifier, emailNotifier];
 
 /** What the save_lead tool reports back to Claude (`ok: false` → tool_result with is_error). */
 export type ToolOutcome = { ok: boolean; message: string };
@@ -134,7 +137,11 @@ function fingerprint(lead: Lead): string {
 }
 
 async function notifyAll(lead: Lead, isNew: boolean): Promise<void> {
-  const results = await Promise.allSettled(LEAD_NOTIFIERS.map((n) => n.notify(lead, isNew)));
+  // In parallel, and isolated: the async wrapper turns even a synchronous throw into a
+  // rejection, so one broken channel can't stop the others or reach the client's reply.
+  const results = await Promise.allSettled(
+    LEAD_NOTIFIERS.map(async (n) => n.notify(lead, isNew)),
+  );
   results.forEach((result, i) => {
     if (result.status === "rejected") {
       console.error(`[whatsapp] falló el aviso de lead "${LEAD_NOTIFIERS[i].name}"`, result.reason);
