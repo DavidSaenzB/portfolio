@@ -15,7 +15,10 @@ export const es = {
         ],
         bio: "Desarrollador Full-Stack & Especialista en MVPs con IA, con más de 10 años de experiencia en negocios y finanzas. Construyo aplicaciones listas para producción rápidamente — desde plataformas SaaS y apps web hasta herramientas con IA y automatizaciones personalizadas — usando React, Node.js, FastAPI y Claude AI.\n\nLo que me diferencia: no solo escribo código, entiendo el negocio detrás de él. Esa combinación de habilidades técnicas y pensamiento estratégico significa que entrego soluciones que realmente funcionan en el mundo real.",
         btnProjects: "Proyectos",
-        btnContact: "Contacta conmigo"
+        btnContact: "Contacta conmigo",
+        availability: "Disponible para nuevos proyectos",
+        chipYears: "años en negocios y finanzas",
+        chipProjects: "proyectos entregados"
     },
     about: {
         title1: "Toda mi ",
