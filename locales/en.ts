@@ -21,63 +21,79 @@ export const en = {
         chipProjects: "projects shipped"
     },
     about: {
-        title1: "My entire ",
-        title2: "professional journey",
+        label: "About",
+        title1: "A decade in business.",
+        title2: "Now I build the software.",
+        intro: "I spent 10+ years running operations, budgets and teams before moving into software. Today I build full-stack products and AI tools — with the business goal in mind from day one.",
         counters: [
             { text: "Years of work experience" },
             { text: "Full-Stack Projects" },
-            { text: "Certifications (Dev & AI)" }
+            { text: "Courses & certifications" }
         ],
-        timeline: [
-            {
-                title: "Junior Software Engineer",
-                subtitle: "Open Democracy — Remote",
-                description: "Software development on a temporary contract, building and maintaining web solutions for the organization.",
-                date: "Jan 2026 - Present",
-            },
-            {
-                title: "Junior Software Engineer",
-                subtitle: "Joy Marketing — Worldwide — Remote",
-                description: "Part-time software development, creating and maintaining web applications and digital solutions.",
-                date: "Dec 2024 - Present",
-            },
-            {
-                title: "Artificial Intelligence Bootcamp",
-                subtitle: "Universidad San Buenaventura & MinTIC Colombia",
-                description: "Intensive training in Artificial Intelligence and Python programming. Talento Tech Valle.",
-                date: "Nov 2025",
-            },
-            {
-                title: "Introduction to Cybersecurity",
-                subtitle: "Cisco Networking Academy",
-                description: "Fundamentals of cybersecurity, common threats and vulnerabilities, online protection strategies, and organizational security practices.",
-                date: "Oct 2025",
-            },
-            {
-                title: "Full-Stack Developer Bootcamp",
-                subtitle: "SoyHenry, Argentina",
-                description: "Immersive training in modern web development (Frontend & Backend) with technologies like React, Node.js, and Databases.",
-                date: "Graduated",
-            },
-            {
-                title: "IT Process Leader & Administrative Analyst",
-                subtitle: "Radiologia Diagnostica Bolivar SAS",
-                description: "Optimization of IT workflows, task automation, and Lean/Agile methodologies. Handled budgets, quality systems, and led a 5-person administrative team.",
-                date: "Sep 2014 - Mar 2024",
-            },
-            {
-                title: "Administrative Manager",
-                subtitle: "Inversiones Chulquin Zomac SAS",
-                description: "Comprehensive management of specialty coffee production. Coordinated certifications (Rainforest, UTZ, FairTrade), financial analysis, and accounting software.",
-                date: "Jun 2013 - Jun 2022",
-            },
-            {
-                title: "Business Administrator",
-                subtitle: "Universidad de San Buenaventura Cali",
-                description: "Bachelor's Degree in Business Administration.",
-                date: "Jun 2016",
-            }
-        ]
+        software: {
+            title: "Software engineering",
+            items: [
+                {
+                    period: "2026 — Present",
+                    role: "Full-Stack Developer",
+                    company: "Open Democracy",
+                    location: "Remote",
+                    description: "End-to-end product features for a web platform: React and TypeScript frontends, Python and Go APIs, PostgreSQL and cloud deployments on AWS.",
+                },
+                {
+                    period: "2024 — Present",
+                    role: "Full-Stack Developer",
+                    company: "Joy Marketing",
+                    location: "Worldwide · Remote",
+                    description: "Web applications, internal tools and automations for a marketing agency, including third-party API integrations running in production.",
+                },
+            ],
+        },
+        business: {
+            title: "Business background",
+            subtitle: "Why I scope for ROI, not just features.",
+            items: [
+                {
+                    period: "2014 — 2024",
+                    role: "IT Process Leader & Administrative Analyst",
+                    company: "Radiología Diagnóstica Bolívar",
+                    description: "Automated IT workflows with Lean/Agile methods, managed budgets and quality systems, and led a 5-person administrative team.",
+                },
+                {
+                    period: "2013 — 2022",
+                    role: "Administrative Manager",
+                    company: "Inversiones Chulquin Zomac",
+                    description: "Ran operations for a specialty coffee producer: Rainforest, UTZ and FairTrade certifications, financial analysis and accounting systems.",
+                },
+            ],
+        },
+        education: {
+            title: "Education & certifications",
+            items: [
+                {
+                    title: "Bachelor's in Business Administration",
+                    institution: "Universidad de San Buenaventura Cali",
+                    year: "2016",
+                },
+                {
+                    title: "Full-Stack Developer Bootcamp",
+                    institution: "SoyHenry",
+                    detail: "React, Node.js, databases",
+                    year: "2024",
+                },
+                {
+                    title: "Artificial Intelligence Bootcamp",
+                    institution: "Universidad de San Buenaventura & MinTIC",
+                    detail: "Talento Tech",
+                    year: "2025",
+                },
+                {
+                    title: "Introduction to Cybersecurity",
+                    institution: "Cisco Networking Academy",
+                    year: "2025",
+                },
+            ],
+        },
     },
     services: {
         title1: "My ",

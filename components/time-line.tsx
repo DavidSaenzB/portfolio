@@ -1,37 +1,69 @@
 "use client"
 import { useLanguage } from "@/context/LanguageContext";
 
+const cardClass = "rounded-3xl border border-slate-700/50 bg-slate-900/60 p-8";
+
+const SectionHeading = ({ title, subtitle }: { title: string; subtitle?: string }) => (
+    <div className="mb-10">
+        <h2 className="text-3xl font-extrabold tracking-tight md:text-4xl">{title}</h2>
+        {subtitle && <p className="mt-3 text-lg text-slate-400">{subtitle}</p>}
+    </div>
+);
+
+// Career sections of the About page: software roles, business background, education.
 const TimeLine = () => {
     const { dict } = useLanguage();
-    
+    const { software, business, education } = dict.about;
+
     return (
-        <div className="flex flex-col justify-center divide-y divide-slate-200">
-            <div className="w-full max-w-3xl mx-auto md:pb-40 md:pt-20">
-                <div className="-my-6">
-                    {dict.about.timeline.map((data, index) => (
-                        <div key={index} className="relative py-6 pl-8 sm:pl-32 group">
-                            <h3 className="mb-1 text-2xl font-bold sm:mb-0">{data.title}</h3>
-                            <div className="flex flex-col sm:flex-row items-start mb-1 
-                                        group-last:before:hidden before:absolute 
-                                        before:left-2 sm:before:left-0 before:h-full
-                                        before:px-px before:bg-slate-300 sm:before:ml-[6.5rem] 
-                                        before:self-start before:-translate-x-1/2 
-                                        before:translate-y-3 after:absolute after:left-2 
-                                        sm:after:left-0 after:w-2 after:h-2 after:bg-emerald-600 
-                                        after:border-4 box-content after:border-slate-50 
-                                        after:rounded-full sm:after:ml-[6.5rem] after:-translate-x-1/2 
-                                        after:translate-y-1.5">
-                                <time className="sm:absolute left-0 translate-y-0.5 inline-flex items-center justify-center text-[10px] sm:text-[11px] font-semibold uppercase w-full sm:w-[95px] h-auto px-2 py-1.5 mb-3 sm:mb-0 text-emerald-600 bg-emerald-100 rounded-xl leading-tight text-center break-words">
-                                    {data.date}
-                                </time>
-                                <div className="text-xl font-bold text-gray-400">{data.subtitle}</div>
+        <>
+            <section>
+                <SectionHeading title={software.title} />
+                <div className="flex flex-col gap-6">
+                    {software.items.map((job) => (
+                        <article key={job.company} className={`${cardClass} grid gap-3 md:grid-cols-[11rem_minmax(0,1fr)] md:gap-8`}>
+                            <p className="font-semibold text-emerald-400">{job.period}</p>
+                            <div>
+                                <h3 className="text-xl font-bold text-white">{job.role}</h3>
+                                <p className="mt-1 text-slate-400">{job.company} · {job.location}</p>
+                                <p className="mt-4 leading-relaxed text-slate-300">{job.description}</p>
                             </div>
-                            <div className="text-slate-400">{data.description}</div>
-                        </div>
+                        </article>
                     ))}
                 </div>
-            </div>
-        </div>
+            </section>
+
+            <section>
+                <SectionHeading title={business.title} subtitle={business.subtitle} />
+                <div className="grid gap-6 md:grid-cols-2">
+                    {business.items.map((job) => (
+                        <article key={job.company} className={cardClass}>
+                            <p className="font-semibold text-emerald-400">{job.period}</p>
+                            <h3 className="mt-3 text-xl font-bold text-white">{job.role}</h3>
+                            <p className="mt-1 text-slate-400">{job.company}</p>
+                            <p className="mt-4 leading-relaxed text-slate-300">{job.description}</p>
+                        </article>
+                    ))}
+                </div>
+            </section>
+
+            <section>
+                <SectionHeading title={education.title} />
+                <ul className="border-y divide-y border-slate-700/50 divide-slate-700/50">
+                    {education.items.map((item) => (
+                        <li key={item.title} className="flex items-start justify-between gap-6 py-6">
+                            <div className="min-w-0">
+                                <h3 className="text-lg font-bold text-white">{item.title}</h3>
+                                <p className="mt-1 text-slate-400">
+                                    {[item.institution, item.detail].filter(Boolean).join(" · ")}
+                                </p>
+                            </div>
+                            <p className="font-semibold shrink-0 text-emerald-400 tabular-nums">{item.year}</p>
+                        </li>
+                    ))}
+                </ul>
+            </section>
+        </>
     );
 }
 
