@@ -1,12 +1,24 @@
 "use client"
 import { dataCounter } from "@/data";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useInView, useReducedMotion } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext";
 
 const CounterItem = ({ endCounter, text }: { endCounter: number, text: string }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  // Count up once, when 40% of the cell is on screen.
+  const inView = useInView(ref, { once: true, amount: 0.4 });
+  const reduceMotion = useReducedMotion();
   const [count, setCount] = useState(0);
 
   useEffect(() => {
+    // Read in an effect (not during render) so the server HTML and hydration still match.
+    if (reduceMotion) {
+      setCount(endCounter);
+      return;
+    }
+    if (!inView) return;
+
     let start = 0;
     const duration = 2000;
     const incrementTime = Math.abs(Math.floor(duration / endCounter));
@@ -21,10 +33,10 @@ const CounterItem = ({ endCounter, text }: { endCounter: number, text: string })
     }, incrementTime);
 
     return () => clearInterval(timer);
-  }, [endCounter]);
+  }, [endCounter, inView, reduceMotion]);
 
   return (
-    <div className="flex flex-col items-center justify-center gap-2 p-8 text-center">
+    <div ref={ref} className="flex flex-col items-center justify-center gap-2 p-8 text-center">
       <p className="text-4xl font-extrabold md:text-5xl text-emerald-400 tabular-nums">
         {count}+
       </p>
