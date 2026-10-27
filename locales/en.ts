@@ -2,6 +2,17 @@ export const en = {
     header: {
         logo: "Dev",
     },
+    nav: {
+        main: "Main navigation",
+        dock: "Sections",
+        social: "Social links",
+        home: "Home",
+        about: "About",
+        services: "Services",
+        work: "Work",
+        contact: "Contact",
+        talk: "Let's talk",
+    },
     footer: {
         privacy: "Privacy Policy",
         rights: "All rights reserved.",
@@ -21,9 +32,6 @@ export const en = {
         chipProjects: "projects shipped"
     },
     home: {
-        stats: {
-            ariaLabel: "Highlights",
-        },
         packages: {
             label: "Packages",
             title: "Clear scope. Fixed price.",

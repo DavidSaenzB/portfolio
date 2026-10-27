@@ -12,7 +12,7 @@ const PortfolioPage = () => {
         <>
             <TransitionPage />
             <CoverParticles />
-            <div className="flex flex-col min-h-screen pt-36 px-4 pb-32 md:px-0 relative z-10 mt-10">
+            <div className="flex flex-col min-h-screen pt-24 px-4 pb-32 md:pt-36 md:px-0 relative z-10 md:mt-10">
                 <div className="container max-w-6xl mx-auto">
                     <h1 className="text-3xl leading-tight text-center md:text-left md:text-5xl md:mb-10 mb-6 font-bold">
                         {dict.portfolio.title1} <span className="text-emerald-500">{dict.portfolio.title2}</span>

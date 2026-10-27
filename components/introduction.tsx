@@ -14,8 +14,8 @@ const Introduction = () => {
     // Spacing uses the compact scale by default and opens up only on md+ screens at least 861px tall,
     // so short laptops (1366x768, 1280x800, iPad landscape) keep the whole hero clear of the dock.
     <section className="relative z-10 w-full">
-      <div className="grid items-center grid-cols-1 max-w-6xl gap-16 mx-auto md:grid-cols-[minmax(0,1fr)_auto] md:gap-20">
-        <div className="@container flex flex-col items-center text-center md:items-start md:text-left">
+      <div className="grid items-center grid-cols-1 max-w-6xl gap-10 mx-auto md:grid-cols-[minmax(0,1fr)_auto] md:gap-20">
+        <div className="@container flex flex-col items-start text-left">
           <span className="inline-flex items-center gap-2 px-4 py-1.5 mb-5 text-sm font-semibold border rounded-full border-emerald-500/30 bg-emerald-950/40 text-emerald-300 md:[@media(min-height:861px)]:mb-6">
             <span aria-hidden="true" className="w-2 h-2 rounded-full bg-emerald-400" />
             {dict.intro.availability}
@@ -38,8 +38,9 @@ const Introduction = () => {
           </h1>
 
           <div className="flex flex-col max-w-xl gap-4 mb-8 text-lg leading-relaxed text-slate-300 md:[@media(max-height:860px)]:leading-normal md:[@media(min-height:861px)]:gap-5 md:[@media(min-height:861px)]:mb-10 xl:[@media(min-height:950px)]:text-xl">
+            {/* Phones show only the first paragraph so the hero stays short; the rest appears from md. */}
             {bioParagraphs.map((paragraph, index) => (
-              <p key={index}>{paragraph}</p>
+              <p key={index} className={index > 0 ? "hidden md:block" : undefined}>{paragraph}</p>
             ))}
           </div>
 
@@ -60,9 +61,11 @@ const Introduction = () => {
           </div>
         </div>
 
-        {/* Width is capped by the small viewport height so the framed photo always fits above the dock
-            (landscape phones); max-w keeps room for the chips on 320-360px screens. */}
-        <div className="@container relative w-[min(300px,calc((100svh_-_132px)_*_0.8))] max-w-[calc(100%_-_2rem)] mx-auto md:mx-0 md:max-w-none md:justify-self-end lg:w-[min(380px,calc((100svh_-_132px)_*_0.8))]">
+        {/* Phones: the photo goes first (order-first), up to 200px wide, and shrinks on short screens so the
+            badge and the animated headline still fit above the dock (178px at 320x568, 140px minimum for
+            landscape). md+ moves it back to the right column, capped by the viewport height so it always fits
+            above the dock. max-w keeps room for the chips on 320-360px screens. */}
+        <div className="@container relative order-first w-[clamp(140px,calc((100svh_-_345px)_*_0.8),200px)] max-w-[calc(100%_-_2rem)] mx-auto md:order-none md:mx-0 md:max-w-none md:justify-self-end md:w-[min(300px,calc((100svh_-_132px)_*_0.8))] lg:w-[min(380px,calc((100svh_-_132px)_*_0.8))]">
           <div aria-hidden="true" className="absolute pointer-events-none -inset-3.5 rounded-[40px] border border-emerald-500/20" />
           <div className="relative overflow-hidden border aspect-[4/5] rounded-[32px] border-slate-700/60">
             {/* The square source covers a 4:5 frame, so it is drawn at the frame's height (1.25x its width). */}

@@ -21,7 +21,7 @@ const ServicesPage = () => {
         <>
             <TransitionPage />
             <CoverParticles />
-            <div className="relative z-10 max-w-6xl mx-auto px-4 pt-28 pb-20">
+            <div className="relative z-10 max-w-6xl mx-auto px-4 pt-24 pb-20 md:pt-28">
 
                 {/* 1. Header — full width */}
                 <div className="text-center mb-16">
