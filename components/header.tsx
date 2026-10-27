@@ -8,9 +8,9 @@ import { handleHomeLinkClick } from "@/utils/home-link";
 
 // Text links to the Home sections (md+ only; on phones the dock covers navigation).
 const sectionLinks = [
+  { key: "about", href: "/#about" },
   { key: "services", href: "/#services" },
   { key: "work", href: "/#work" },
-  { key: "about", href: "/#about" },
 ] as const;
 
 const Header = () => {

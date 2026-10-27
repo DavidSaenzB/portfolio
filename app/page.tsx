@@ -24,9 +24,9 @@ export default function Home() {
           the last one. */}
       <div className="relative z-10 px-4 pb-32 md:px-8">
         <div className="flex flex-col max-w-6xl gap-24 mx-auto md:gap-40">
+          <WhyMeSection />
           <PackagesSection />
           <FeaturedWorkSection />
-          <WhyMeSection />
           <ContactSection />
         </div>
       </div>
