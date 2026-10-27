@@ -4,27 +4,23 @@ import { useLanguage } from "@/context/LanguageContext";
 
 interface ServicesListProps {
     indices?: number[];
-    gridClass?: string;
 }
 
-const ServicesList = ({ indices, gridClass }: ServicesListProps) => {
+// Service cards in the landing's card style (same as "Why work with me"), two columns from md.
+const ServicesList = ({ indices }: ServicesListProps) => {
     const { dict } = useLanguage();
 
     const items = dict.services.items
         .map((item, index) => ({ item, index }))
         .filter(({ index }) => !indices || indices.includes(index));
 
-    const grid = gridClass ?? "md:grid-cols-2 lg:grid-cols-3";
-
     return (
-        <div className={`grid items-center justify-center max-w-5xl gap-6 mx-auto ${grid}`}>
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             {items.map(({ item, index }) => (
-                <div key={index} className="rounded-xl border border-teal-50/20 bg-slate-800/20 p-6 shadow-light hover:shadow-emerald-500/20 transition-all duration-300">
-                    <div className="mb-4 text-4xl text-emerald-500">{serviceData[index].icon}</div>
-                    <div>
-                        <h3 className="mb-4 text-lg font-bold">{item.title}</h3>
-                        <p className="text-slate-300">{item.description}</p>
-                    </div>
+                <div key={index} className="p-8 border rounded-3xl border-slate-700/50 bg-slate-900/60">
+                    <div aria-hidden="true" className="text-emerald-400">{serviceData[index].icon}</div>
+                    <h3 className="mt-5 text-lg font-bold text-white">{item.title}</h3>
+                    <p className="mt-3 leading-relaxed text-slate-300">{item.description}</p>
                 </div>
             ))}
         </div>

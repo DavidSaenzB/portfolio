@@ -146,8 +146,9 @@ export const en = {
         },
     },
     services: {
-        title1: "My ",
-        title2: "Services",
+        label: "Services",
+        title1: "Custom software,",
+        title2: "ready for production.",
         description: "As a specialist in Full-Stack development and Artificial Intelligence, I offer advanced technical solutions to modernize your business. My focus ranges from creating web platforms and MVPs to architecting Machine Learning algorithms and automating systems.",
         items: [
             {
@@ -175,7 +176,6 @@ export const en = {
                 description: "Design and development of custom websites with modern architectures, dynamic interfaces, and a total focus on UX/UI.",
             }
         ],
-        packagesTitle: "Packages",
         packages: {
             popularBadge: "Most popular",
             launchBadge: "Launch price",
@@ -193,7 +193,7 @@ export const en = {
                         "Optional monthly maintenance",
                     ],
                     btn: "I want this",
-                    waMsg: "Hola David, me interesa el paquete Starter — Chatbot IA",
+                    waMsg: "Hi David, I'm coming from your website and I'm interested in the Starter — AI Chatbot package.",
                 },
                 {
                     name: "AI Automation",
@@ -206,7 +206,7 @@ export const en = {
                         "Documentation included",
                     ],
                     btn: "I want this",
-                    waMsg: "Hola David, me interesa el paquete Automatización IA",
+                    waMsg: "Hi David, I'm coming from your website and I'm interested in the AI Automation package.",
                 },
                 {
                     name: "AI MVP Sprint",
@@ -219,20 +219,32 @@ export const en = {
                         "Auth & deployment",
                     ],
                     btn: "Let's talk",
-                    waMsg: "Hola David, me interesa el AI MVP Sprint",
+                    waMsg: "Hi David, I'm coming from your website and I'm interested in the AI MVP Sprint.",
                 },
             ],
         },
-        customTitle: "Custom work",
+        custom: {
+            label: "Custom work",
+            title: "Beyond the packages.",
+        },
+        // /services picks one by WHATSAPP_NUMBER: "contact" while it is empty (button goes to /contact).
         cta: {
-            text: "Let's talk? Message me and I'll reply personally",
-            btn: "Message me on WhatsApp",
-            waMsg: "Hola David, vengo de tu web y quiero hablar sobre un proyecto",
+            contact: {
+                text: "Let's talk? Tell me about your project and I'll get back to you by email or WhatsApp.",
+                btn: "Get in touch",
+            },
+            whatsapp: {
+                text: "Let's talk? My assistant replies instantly on WhatsApp and I follow up personally.",
+                btn: "Message me on WhatsApp",
+            },
+            waMsg: "Hi David, I'm coming from your website and I'd like to talk about a project.",
         },
     },
     portfolio: {
-        title1: "My latest ",
+        label: "Portfolio",
+        title1: "My latest",
         title2: "work",
+        intro: "Products I've built and shipped.",
         btnGithub: "Github",
         btnDemo: "Demo",
         items: [
@@ -246,7 +258,6 @@ export const en = {
     contact: {
         title1: "Let's build your next ",
         title2: "AI-powered software",
-        subtitle: "High-performance solutions",
         text1: "Whether you need to automate workflows, train a predictive model, process Natural Language (NLP), or develop code from scratch for an innovative MVP; I am equipped to bring your technical vision to production.",
         text2: "Fill out the form stating your requirements or contact me directly to schedule an initial session to define the scope and architecture of your product.",
         formLabels: [
@@ -267,8 +278,8 @@ export const en = {
             "Describe the language model, web architecture, or data flow of your project..."
         ],
         btnSubmit: "Send Technical Proposal",
-        statusLoading: "Sending...",
+        btnSending: "Sending…",
         statusSuccess: "Message sent successfully! I will review your request and contact you soon.",
-        statusError: "Oops! Something went wrong. Make sure you've entered your Formspree ID in the code."
+        statusError: "Something went wrong. Please try again or email hire@davidsaenz.dev."
     }
 }

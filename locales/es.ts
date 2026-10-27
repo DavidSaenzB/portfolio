@@ -146,8 +146,9 @@ export const es = {
         },
     },
     services: {
-        title1: "Mis ",
-        title2: "Servicios",
+        label: "Servicios",
+        title1: "Software a medida,",
+        title2: "listo para producción.",
         description: "Como especialista en desarrollo Full-Stack e Inteligencia Artificial, ofrezco soluciones técnicas avanzadas para modernizar tu negocio. Mi enfoque abarca desde la creación de plataformas web y MVPs, hasta la arquitectura de algoritmos de Machine Learning y automatización de sistemas.",
         items: [
             {
@@ -175,7 +176,6 @@ export const es = {
                 description: "Diseño y desarrollo de sitios web a medida, con arquitecturas modernas, interfaces dinámicas y un enfoque total en la experiencia del usuario (UX/UI).",
             }
         ],
-        packagesTitle: "Paquetes",
         packages: {
             popularBadge: "Más popular",
             launchBadge: "Precio de lanzamiento",
@@ -223,16 +223,28 @@ export const es = {
                 },
             ],
         },
-        customTitle: "Trabajo a medida",
+        custom: {
+            label: "Trabajo a medida",
+            title: "Más allá de los paquetes.",
+        },
+        // /services picks one by WHATSAPP_NUMBER: "contact" while it is empty (button goes to /contact).
         cta: {
-            text: "¿Hablamos? Escríbeme y te respondo personalmente",
-            btn: "Escríbeme por WhatsApp",
+            contact: {
+                text: "¿Hablamos? Cuéntame tu proyecto y te respondo por correo o WhatsApp.",
+                btn: "Contactar",
+            },
+            whatsapp: {
+                text: "¿Hablamos? Mi asistente te responde al instante por WhatsApp y yo hago el seguimiento.",
+                btn: "Escríbeme por WhatsApp",
+            },
             waMsg: "Hola David, vengo de tu web y quiero hablar sobre un proyecto",
         },
     },
     portfolio: {
-        title1: "Mis últimos ",
+        label: "Portfolio",
+        title1: "Mis últimos",
         title2: "trabajos",
+        intro: "Productos que he construido y lanzado.",
         btnGithub: "Github",
         btnDemo: "Demo",
         items: [
@@ -246,7 +258,6 @@ export const es = {
     contact: {
         title1: "Construyamos tu próximo ",
         title2: "software con IA",
-        subtitle: "Soluciones de alto rendimiento",
         text1: "Ya sea que necesites automatizar flujos de trabajo en tu empresa, entrenar un modelo predictivo, procesar Lenguaje Natural (PLN), o desarrollar un código desde cero para un MVP innovador; estoy equipado para llevar tu visión técnica a producción.",
         text2: "Completa el formulario estableciendo tu requerimiento o escríbeme directo para agendar una sesión inicial donde definiremos el alcance y la arquitectura del producto.",
         formLabels: [
@@ -267,8 +278,8 @@ export const es = {
             "Describe el modelo de lenguaje, la arquitectura web o el flujo de datos de tu proyecto..."
         ],
         btnSubmit: "Enviar Propuesta Técnica",
-        statusLoading: "Enviando...",
+        btnSending: "Enviando…",
         statusSuccess: "¡Mensaje enviado con éxito! Analizaré tu solicitud y me comunicaré muy pronto.",
-        statusError: "Ups! Algo salió mal. Asegúrate de haber puesto tu ID de Formspree en el código."
+        statusError: "Algo salió mal. Intenta de nuevo o escríbeme a hire@davidsaenz.dev."
     }
 }

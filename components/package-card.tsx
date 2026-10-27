@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 interface PackageCardProps {
     name: string;
     subtitle: string;
@@ -20,6 +22,17 @@ export default function PackageCard({
     deliveryLabel, popular, popularBadge, launchBadge, variant = "default",
 }: PackageCardProps) {
     const isHome = variant === "home";
+    const buttonClass = isHome
+        ? `inline-flex items-center justify-center w-full min-h-[52px] rounded-2xl transition-all duration-300 ${
+            popular
+                ? "bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold"
+                : "border border-slate-600 text-white font-semibold hover:border-emerald-400 hover:text-emerald-300 hover:bg-white/5"
+        }`
+        : `w-full text-center py-2.5 rounded-xl font-semibold transition-all duration-300 ${
+            popular
+                ? "bg-emerald-500 hover:bg-emerald-400 text-white"
+                : "border-2 border-emerald-500 text-emerald-500 hover:bg-emerald-500/20"
+        }`;
 
     return (
         <div className={isHome
@@ -60,23 +73,15 @@ export default function PackageCard({
                 ))}
             </ul>
 
-            <a
-                href={href}
-                {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                className={isHome
-                    ? `inline-flex items-center justify-center w-full min-h-[52px] rounded-2xl transition-all duration-300 ${
-                        popular
-                            ? "bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold"
-                            : "border border-slate-600 text-white font-semibold hover:border-emerald-400 hover:text-emerald-300 hover:bg-white/5"
-                    }`
-                    : `w-full text-center py-2.5 rounded-xl font-semibold transition-all duration-300 ${
-                    popular
-                        ? "bg-emerald-500 hover:bg-emerald-400 text-white"
-                        : "border-2 border-emerald-500 text-emerald-500 hover:bg-emerald-500/20"
-                }`}
-            >
-                {btn}
-            </a>
+            {/* Internal routes (waLink's /contact fallback) navigate client-side; in-page anchors (#contact)
+                and external links stay plain <a>. */}
+            {!external && href.startsWith("/") ? (
+                <Link href={href} className={buttonClass}>{btn}</Link>
+            ) : (
+                <a href={href} {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})} className={buttonClass}>
+                    {btn}
+                </a>
+            )}
         </div>
     );
 }
