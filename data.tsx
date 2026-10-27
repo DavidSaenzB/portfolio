@@ -1,56 +1,67 @@
 import { BookText, CodeSquare, HomeIcon, UserRound, Linkedin, Twitter, Rss, Twitch, Youtube, Computer, Cpu, Bot, Database, BarChart, Eye, Github, Mail, Phone, Speech } from "lucide-react";
 
+// `label` is the accessible name of the icon-only links (brand names, same in both languages).
 export const socialNetworks = [
     {
         id: 1,
+        label: "GitHub",
         logo: <Github size={30} strokeWidth={1} />,
         src: "https://github.com/DavidSaenzB",
     },
     {
         id: 2,
+        label: "LinkedIn",
         logo: <Linkedin size={30} strokeWidth={1} />,
         src: "https://www.linkedin.com/in/david-saenz-bolivar",
     },
     {
         id: 3,
+        label: "Email",
         logo: <Mail size={30} strokeWidth={1} />,
         src: "mailto:hire@davidsaenz.dev",
     }
 ];
 
 
+// Dock items. `key` is the label in locales (nav.*) and, except for "home", the id of the Home section
+// the link scrolls to; `page` is the standalone route that also marks the item as active.
 export const itemsNavbar = [
     {
         id: 1,
-        title: "Home",
+        key: "home",
         icon: <HomeIcon size={25} color="#fff" strokeWidth={1} />,
         link: "/",
+        page: "/",
     },
     {
         id: 2,
-        title: "User",
+        key: "about",
         icon: <UserRound size={25} color="#fff" strokeWidth={1} />,
-        link: "/about-me",
+        link: "/#about",
+        page: "/about-me",
     },
     {
         id: 3,
-        title: "Book",
+        key: "services",
         icon: <BookText size={25} color="#fff" strokeWidth={1} />,
-        link: "/services",
+        link: "/#services",
+        page: "/services",
     },
     {
         id: 4,
-        title: "Target",
+        key: "work",
         icon: <CodeSquare size={25} color="#fff" strokeWidth={1} />,
-        link: "/portfolio",
+        link: "/#work",
+        page: "/portfolio",
     },
     {
         id: 5,
-        title: "Contact",
+        key: "contact",
         icon: <Speech size={25} color="#fff" strokeWidth={1} />,
-        link: "/contact",
+        link: "/#contact",
+        page: "/contact",
     },
-];
+] as const;
 
 // Labels live in locales (about.counters), in the same order.
 export const dataCounter = [

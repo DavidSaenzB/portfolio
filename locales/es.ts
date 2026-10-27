@@ -2,6 +2,17 @@ export const es = {
     header: {
         logo: "Dev",
     },
+    nav: {
+        main: "Navegación principal",
+        dock: "Secciones",
+        social: "Redes sociales",
+        home: "Inicio",
+        about: "Sobre mí",
+        services: "Servicios",
+        work: "Trabajo",
+        contact: "Contacto",
+        talk: "Hablemos",
+    },
     footer: {
         privacy: "Política de Privacidad",
         rights: "Todos los derechos reservados.",
@@ -21,9 +32,6 @@ export const es = {
         chipProjects: "proyectos entregados"
     },
     home: {
-        stats: {
-            ariaLabel: "Destacados",
-        },
         packages: {
             label: "Paquetes",
             title: "Alcance claro. Precio fijo.",

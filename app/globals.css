@@ -11,6 +11,22 @@ main {
   min-height: 100dvh;
 }
 
+/* In-page jumps (dock, header links) glide to the section; route changes still jump (Next.js forces auto). */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* tsParticles inserts its canvas in normal flow (width 100%, 2:1 => 50vw tall) a frame before styling it
+   fixed. Arriving at /#section from another page, Chrome's scroll anchoring compensates for that phantom
+   shift and lands 50vw past the section. Keeping the canvas out of flow from the start avoids it. */
+#tsparticles > canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
 
 @layer utilities {
   .text-balance {

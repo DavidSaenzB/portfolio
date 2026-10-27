@@ -13,8 +13,8 @@ const PageAboutMe = () => {
             <TransitionPage />
             <CoverParticles />
             {/* relative z-10: the particles canvas is position:fixed z-0. pt clears the absolute header
-                (taller on mobile, where it stacks); pb keeps the fixed dock off the last section. */}
-            <div className="relative z-10 px-4 pt-40 pb-32 md:px-8 md:pt-36">
+                (56px on phones); pb keeps the fixed dock off the last section. */}
+            <div className="relative z-10 px-4 pt-24 pb-32 md:px-8 md:pt-36">
                 <div className="flex flex-col max-w-5xl gap-24 mx-auto">
                     <section>
                         <p className="text-sm font-semibold tracking-[0.2em] uppercase text-emerald-400">

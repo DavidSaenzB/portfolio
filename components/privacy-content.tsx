@@ -12,7 +12,7 @@ const PrivacyContent = () => {
     <>
       <TransitionPage />
       <CoverParticles />
-      <div className="relative z-10 max-w-3xl mx-auto px-4 pt-28 pb-40">
+      <div className="relative z-10 max-w-3xl mx-auto px-4 pt-24 pb-40 md:pt-28">
         <h1 className="text-3xl md:text-4xl font-bold mb-3">{doc.title}</h1>
         <p className="text-sm text-slate-400 mb-10">{doc.lastUpdated}</p>
 
