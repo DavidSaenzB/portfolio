@@ -19,16 +19,16 @@ const CounterItem = ({ endCounter, text }: { endCounter: number, text: string })
         clearInterval(timer);
       }
     }, incrementTime);
-    
+
     return () => clearInterval(timer);
   }, [endCounter]);
 
   return (
-    <div className="flex flex-col items-center justify-center">
-      <p className="flex mb-2 text-2xl font-extrabold md:text-4xl text-emerald-500">
-        + {count}
+    <div className="flex flex-col items-center justify-center gap-2 p-8 text-center">
+      <p className="text-4xl font-extrabold md:text-5xl text-emerald-400 tabular-nums">
+        {count}+
       </p>
-      <p className="text-sm uppercase max-w-[100px] text-center">{text}</p>
+      <p className="text-sm font-medium tracking-wide uppercase text-slate-300">{text}</p>
     </div>
   )
 }
@@ -36,12 +36,11 @@ const CounterItem = ({ endCounter, text }: { endCounter: number, text: string })
 const CounterServices = () => {
     const { dict } = useLanguage();
 
+    // divide-* draws the separators: horizontal between stacked cells on mobile, vertical on md+.
     return (
-        <div className="grid justify-between max-w-3xl grid-cols-1 gap-3 mx-auto my-8 md:grid-cols-3 md:gap-6">
+        <div className="grid grid-cols-1 border divide-y md:grid-cols-3 md:divide-y-0 md:divide-x divide-slate-700/50 rounded-3xl border-slate-700/50 bg-slate-900/60">
             {dataCounter.map((data, index) => (
-                <div key={data.id} className={`${data.lineRight ? 'md:border-r border-gray-100/20' : ''} ${data.lineRightMobile ? 'border-b md:border-b-0 border-gray-100/20 pb-4 md:pb-0' : ''} flex flex-col items-center justify-center p-2`}>
-                    <CounterItem endCounter={data.endCounter} text={dict.about.counters[index].text} />
-                </div>
+                <CounterItem key={data.id} endCounter={data.endCounter} text={dict.about.counters[index].text} />
             ))}
         </div>
     );

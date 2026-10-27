@@ -52,86 +52,19 @@ export const itemsNavbar = [
     },
 ];
 
-export const dataAboutPage = [
-    {
-        id: 1,
-        title: "Junior Software Engineer",
-        subtitle: "Open Democracy — Remoto",
-        description: "Desarrollo de software bajo contrato temporal, construyendo y manteniendo soluciones web para la organización.",
-        date: "Ene 2026 - Actualidad",
-    },
-    {
-        id: 2,
-        title: "Junior Software Engineer",
-        subtitle: "Joy Marketing — Worldwide — Remoto",
-        description: "Desarrollo de software a jornada parcial, creando y manteniendo aplicaciones web y soluciones digitales.",
-        date: "Dic 2024 - Actualidad",
-    },
-    {
-        id: 3,
-        title: "Bootcamp Inteligencia Artificial",
-        subtitle: "Universidad San Buenaventura & MinTIC Colombia",
-        description: "Formación intensiva en Inteligencia Artificial y programación con Python. Talento Tech Valle.",
-        date: "Nov 2025",
-    },
-    {
-        id: 4,
-        title: "Introducción a la Ciberseguridad",
-        subtitle: "Cisco Networking Academy",
-        description: "Fundamentos de ciberseguridad, amenazas y vulnerabilidades comunes, estrategias de protección en línea y prácticas de seguridad organizacional.",
-        date: "Oct 2025",
-    },
-    {
-        id: 5,
-        title: "Bootcamp Full-Stack Developer",
-        subtitle: "SoyHenry, Argentina",
-        description: "Formación inmersiva en desarrollo web moderno (Frontend & Backend) con tecnologías como React, Node.js y Bases de Datos.",
-        date: "Graduado",
-    },
-    {
-        id: 6,
-        title: "Líder de Procesos TI & Analista Administrativo",
-        subtitle: "Radiologia Diagnostica Bolivar SAS",
-        description: "Optimización de flujos de trabajo TI, automatización de tareas y metodologías Lean/Agile. Gestión de presupuestos, sistemas de calidad y liderazgo de un equipo administrativo de 5 personas.",
-        date: "Sep 2014 - Mar 2024",
-    },
-    {
-        id: 7,
-        title: "Gerente Administrativo",
-        subtitle: "Inversiones Chulquin Zomac SAS",
-        description: "Administración integral de producción de café de especialidad. Coordinación de certificaciones (Rainforest, UTZ, FairTrade), análisis financiero y software contable.",
-        date: "Jun 2013 - Jun 2022",
-    },
-    {
-        id: 8,
-        title: "Administrador de Empresas",
-        subtitle: "Universidad de San Buenaventura Cali",
-        description: "Título profesional universitario (Bachelor's Degree in Business Administration).",
-        date: "Jun 2016",
-    },
-]
-
+// Labels live in locales (about.counters), in the same order.
 export const dataCounter = [
     {
         id: 0,
         endCounter: 10,
-        text: "Años de experiencia laboral",
-        lineRight: true,
-        lineRightMobile: true,
     },
     {
         id: 1,
         endCounter: 63,
-        text: "Proyectos Full-Stack",
-        lineRight: true,
-        lineRightMobile: false,
     },
     {
         id: 2,
-        endCounter: 5,
-        text: "Certificaciones (Dev & IA)",
-        lineRight: false,
-        lineRightMobile: true,
+        endCounter: 4,
     },
 ];
 

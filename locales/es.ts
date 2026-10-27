@@ -21,63 +21,79 @@ export const es = {
         chipProjects: "proyectos entregados"
     },
     about: {
-        title1: "Toda mi ",
-        title2: "trayectoria profesional",
+        label: "Sobre mí",
+        title1: "Una década en negocios.",
+        title2: "Ahora construyo el software.",
+        intro: "Pasé más de 10 años liderando operaciones, presupuestos y equipos antes de dedicarme al software. Hoy construyo productos full-stack y herramientas de IA, con el objetivo de negocio claro desde el primer día.",
         counters: [
             { text: "Años de experiencia laboral" },
             { text: "Proyectos Full-Stack" },
-            { text: "Certificaciones (Dev & IA)" }
+            { text: "Cursos y certificaciones" }
         ],
-        timeline: [
-            {
-                title: "Junior Software Engineer",
-                subtitle: "Open Democracy — Remoto",
-                description: "Desarrollo de software bajo contrato temporal, construyendo y manteniendo soluciones web para la organización.",
-                date: "Ene 2026 - Actualidad",
-            },
-            {
-                title: "Junior Software Engineer",
-                subtitle: "Joy Marketing — Worldwide — Remoto",
-                description: "Desarrollo de software a jornada parcial, creando y manteniendo aplicaciones web y soluciones digitales.",
-                date: "Dic 2024 - Actualidad",
-            },
-            {
-                title: "Bootcamp Inteligencia Artificial",
-                subtitle: "Universidad San Buenaventura & MinTIC Colombia",
-                description: "Formación intensiva en Inteligencia Artificial y programación con Python. Talento Tech Valle.",
-                date: "Nov 2025",
-            },
-            {
-                title: "Introducción a la Ciberseguridad",
-                subtitle: "Cisco Networking Academy",
-                description: "Fundamentos de ciberseguridad, amenazas y vulnerabilidades comunes, estrategias de protección en línea y prácticas de seguridad organizacional.",
-                date: "Oct 2025",
-            },
-            {
-                title: "Bootcamp Full-Stack Developer",
-                subtitle: "SoyHenry, Argentina",
-                description: "Formación inmersiva en desarrollo web moderno (Frontend & Backend) con tecnologías como React, Node.js y Bases de Datos.",
-                date: "Graduado",
-            },
-            {
-                title: "Líder de Procesos TI & Analista Administrativo",
-                subtitle: "Radiologia Diagnostica Bolivar SAS",
-                description: "Optimización de flujos de trabajo TI, automatización de tareas y metodologías Lean/Agile. Gestión de presupuestos, sistemas de calidad y liderazgo de un equipo administrativo de 5 personas.",
-                date: "Sep 2014 - Mar 2024",
-            },
-            {
-                title: "Gerente Administrativo",
-                subtitle: "Inversiones Chulquin Zomac SAS",
-                description: "Administración integral de producción de café de especialidad. Coordinación de certificaciones (Rainforest, UTZ, FairTrade), análisis financiero y software contable.",
-                date: "Jun 2013 - Jun 2022",
-            },
-            {
-                title: "Administrador de Empresas",
-                subtitle: "Universidad de San Buenaventura Cali",
-                description: "Título profesional universitario (Bachelor's Degree in Business Administration).",
-                date: "Jun 2016",
-            }
-        ]
+        software: {
+            title: "Ingeniería de software",
+            items: [
+                {
+                    period: "2026 — Actualidad",
+                    role: "Full-Stack Developer",
+                    company: "Open Democracy",
+                    location: "Remoto",
+                    description: "Funcionalidades de producto de punta a punta para una plataforma web: frontends en React y TypeScript, APIs en Python y Go, PostgreSQL y despliegues en AWS.",
+                },
+                {
+                    period: "2024 — Actualidad",
+                    role: "Full-Stack Developer",
+                    company: "Joy Marketing",
+                    location: "Worldwide · Remoto",
+                    description: "Aplicaciones web, herramientas internas y automatizaciones para una agencia de marketing, con integraciones de APIs de terceros en producción.",
+                },
+            ],
+        },
+        business: {
+            title: "Experiencia en negocios",
+            subtitle: "Por qué pienso en el retorno, no solo en funcionalidades.",
+            items: [
+                {
+                    period: "2014 — 2024",
+                    role: "Líder de Procesos TI y Analista Administrativo",
+                    company: "Radiología Diagnóstica Bolívar",
+                    description: "Automaticé flujos de TI con metodologías Lean/Agile, gestioné presupuestos y sistemas de calidad, y lideré un equipo administrativo de 5 personas.",
+                },
+                {
+                    period: "2013 — 2022",
+                    role: "Gerente Administrativo",
+                    company: "Inversiones Chulquin Zomac",
+                    description: "Dirigí la operación de un productor de café especial: certificaciones Rainforest, UTZ y FairTrade, análisis financiero y sistemas contables.",
+                },
+            ],
+        },
+        education: {
+            title: "Educación y certificaciones",
+            items: [
+                {
+                    title: "Administración de Empresas",
+                    institution: "Universidad de San Buenaventura Cali",
+                    year: "2016",
+                },
+                {
+                    title: "Full-Stack Developer Bootcamp",
+                    institution: "SoyHenry",
+                    detail: "React, Node.js, bases de datos",
+                    year: "2024",
+                },
+                {
+                    title: "Bootcamp de Inteligencia Artificial",
+                    institution: "Universidad de San Buenaventura & MinTIC",
+                    detail: "Talento Tech",
+                    year: "2025",
+                },
+                {
+                    title: "Introducción a la Ciberseguridad",
+                    institution: "Cisco Networking Academy",
+                    year: "2025",
+                },
+            ],
+        },
     },
     services: {
         title1: "Mis ",
