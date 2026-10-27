@@ -15,7 +15,10 @@ export const en = {
         ],
         bio: "Full-Stack Developer & AI-Powered MVP Specialist with 10+ years of business and finance experience. I build production-ready applications fast — from SaaS platforms and web apps to AI-powered tools and custom automations — using React, Node.js, FastAPI and Claude AI.\n\nWhat sets me apart: I don't just write code, I understand the business behind it. That combination of technical skills and strategic thinking means I deliver solutions that actually work in the real world.",
         btnProjects: "Projects",
-        btnContact: "Contact me"
+        btnContact: "Contact me",
+        availability: "Available for new projects",
+        chipYears: "years in business & finance",
+        chipProjects: "projects shipped"
     },
     about: {
         title1: "My entire ",

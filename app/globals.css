@@ -4,13 +4,11 @@
 html,
 body {
   color: #fff;
-  background: #0f0437;
+  background: #0f172a;
 }
 
 main {
-  background:  #393a47;
-  height: 100vh;
-  height: 100dvh;
+  min-height: 100dvh;
 }
 
 
