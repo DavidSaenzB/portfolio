@@ -20,6 +20,48 @@ export const es = {
         chipYears: "años en negocios y finanzas",
         chipProjects: "proyectos entregados"
     },
+    home: {
+        stats: {
+            ariaLabel: "Destacados",
+        },
+        packages: {
+            label: "Paquetes",
+            title: "Alcance claro. Precio fijo.",
+            subtitle: "Elige un paquete o cuéntame tu proyecto y te lo cotizo según el alcance.",
+            link: "Ver servicios en detalle →",
+        },
+        work: {
+            label: "Trabajo destacado",
+            title: "Productos de IA en producción",
+            link: "Todos los proyectos →",
+        },
+        whyMe: {
+            label: "Por qué trabajar conmigo",
+            title: "No solo escribo código. Entiendo el negocio detrás.",
+            link: "Más sobre mí →",
+            points: [
+                {
+                    title: "El negocio primero",
+                    text: "Una década en negocios y finanzas: defino el alcance pensando en el retorno, no en funcionalidades.",
+                },
+                {
+                    title: "Listo para producción",
+                    text: "Autenticación, despliegue y monitoreo incluidos, no una demo que se rompe.",
+                },
+                {
+                    title: "IA que sirve",
+                    text: "Claude, visión por computador y NLP aplicados a un proceso real.",
+                },
+                {
+                    title: "Entrega rápida",
+                    text: "Alcances fijos que se miden en días y semanas, no en meses.",
+                },
+            ],
+        },
+        contact: {
+            text: "Llena el formulario con tus requerimientos o escríbeme directamente.",
+        },
+    },
     about: {
         label: "Sobre mí",
         title1: "Una década en negocios.",

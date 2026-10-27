@@ -20,6 +20,48 @@ export const en = {
         chipYears: "years in business & finance",
         chipProjects: "projects shipped"
     },
+    home: {
+        stats: {
+            ariaLabel: "Highlights",
+        },
+        packages: {
+            label: "Packages",
+            title: "Clear scope. Fixed price.",
+            subtitle: "Pick a package or tell me about your project and I'll quote it by scope.",
+            link: "See services in detail →",
+        },
+        work: {
+            label: "Selected work",
+            title: "AI products in production",
+            link: "All projects →",
+        },
+        whyMe: {
+            label: "Why work with me",
+            title: "I don't just write code. I understand the business behind it.",
+            link: "More about me →",
+            points: [
+                {
+                    title: "Business first",
+                    text: "A decade in business and finance means I scope for ROI, not features.",
+                },
+                {
+                    title: "Production-ready",
+                    text: "Auth, deployment and monitoring included — not a demo that breaks.",
+                },
+                {
+                    title: "AI that's useful",
+                    text: "Claude, computer vision and NLP applied to a real process.",
+                },
+                {
+                    title: "Fast delivery",
+                    text: "Fixed scopes measured in days and weeks, not months.",
+                },
+            ],
+        },
+        contact: {
+            text: "Fill out the form with your requirements or email me directly.",
+        },
+    },
     about: {
         label: "About",
         title1: "A decade in business.",

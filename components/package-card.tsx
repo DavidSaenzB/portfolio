@@ -11,14 +11,24 @@ interface PackageCardProps {
     popular?: boolean;
     popularBadge?: string;
     launchBadge?: string;
+    // "home" matches the landing's card and button styles; the default keeps /services unchanged.
+    variant?: "default" | "home";
 }
 
 export default function PackageCard({
     name, subtitle, price, delivery, features, btn, href, external,
-    deliveryLabel, popular, popularBadge, launchBadge,
+    deliveryLabel, popular, popularBadge, launchBadge, variant = "default",
 }: PackageCardProps) {
+    const isHome = variant === "home";
+
     return (
-        <div className={`relative rounded-xl border p-6 flex flex-col transition-all duration-300 ${
+        <div className={isHome
+            ? `relative rounded-3xl border p-8 flex flex-col transition-all duration-300 ${
+                popular
+                    ? "border-emerald-500/60 bg-slate-900/80 shadow-lg shadow-emerald-500/10"
+                    : "border-slate-700/50 bg-slate-900/60 hover:border-slate-600"
+            }`
+            : `relative rounded-xl border p-6 flex flex-col transition-all duration-300 ${
             popular
                 ? "border-emerald-500 bg-slate-800/40 shadow-lg shadow-emerald-500/10"
                 : "border-teal-50/20 bg-slate-800/20 hover:shadow-emerald-500/20 hover:shadow-md"
@@ -53,7 +63,13 @@ export default function PackageCard({
             <a
                 href={href}
                 {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                className={`w-full text-center py-2.5 rounded-xl font-semibold transition-all duration-300 ${
+                className={isHome
+                    ? `inline-flex items-center justify-center w-full min-h-[52px] rounded-2xl transition-all duration-300 ${
+                        popular
+                            ? "bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold"
+                            : "border border-slate-600 text-white font-semibold hover:border-emerald-400 hover:text-emerald-300 hover:bg-white/5"
+                    }`
+                    : `w-full text-center py-2.5 rounded-xl font-semibold transition-all duration-300 ${
                     popular
                         ? "bg-emerald-500 hover:bg-emerald-400 text-white"
                         : "border-2 border-emerald-500 text-emerald-500 hover:bg-emerald-500/20"
